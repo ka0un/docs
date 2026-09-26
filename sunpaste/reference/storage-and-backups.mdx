@@ -1,0 +1,29 @@
+---
+title: "Storage, Limits & Backups"
+description: "Where SunPaste stores data and what happens to expired and burned pastes."
+icon: "database"
+---
+
+## Where data goes
+
+| Data | Location |
+| --- | --- |
+| Small pastes | Stored directly in the H2 database |
+| Large pastes | Files under the configured paste storage path |
+| QR codes | PNG files under `./data/qrcodes` |
+| Logs | `./data/logs/sunpaste.log` |
+
+## Expired pastes
+
+Expired pastes are marked expired and are no longer viewable, but they stay in storage and the database unless you remove them separately.
+
+## Burned pastes
+
+Burn-after-read pastes are deleted after the first successful read. They are removed from storage and the database, and their QR code assets are deleted.
+
+## Backups
+
+* Personal ZIP export only includes pastes owned by the currently authenticated user.
+* Admin JSON/ZIP backup includes every paste.
+
+See [Settings → Backup & Restore](/sunpaste/admin/settings).

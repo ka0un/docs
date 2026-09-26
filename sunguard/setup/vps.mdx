@@ -1,0 +1,140 @@
+---
+title: "VPS Setup"
+description: "Run SunGuard on a VPS without Pterodactyl."
+icon: "terminal"
+---
+
+## Prerequisites
+
+* Java 21 or newer installed
+* A valid SunGuard license key. See [Get your license key](/license-key).
+
+## Step 1: Upload required files
+
+Transfer the following files to your VPS:
+
+* `server.jar` (SunGuard server file)
+* `license.txt` (contains your license key)
+
+You can use `scp` or an FTP client like FileZilla. Example using `scp`:
+
+```bash
+scp server.jar license.txt user@your-vps-ip:/home/user/
+```
+
+## Step 2: Start the SunGuard server
+
+Navigate to the directory containing `server.jar` and `license.txt`, then run:
+
+```bash
+SERVER_PORT=25595 java -Dterminal.jline=false -Dterminal.ansi=true -jar server.jar
+```
+
+Replace `25595` with your desired port, and make sure the port is open in your firewall.
+
+If Java 21+ is not installed, you can install it with:
+
+```bash
+sudo apt update
+sudo apt install openjdk-21-jdk -y
+```
+
+## Step 3: Verify local access
+
+Check that the server is running correctly:
+
+```bash
+curl http://localhost:25595
+```
+
+## Step 4: Expose to the internet with Nginx (optional)
+
+Install Nginx:
+
+```bash
+sudo apt install nginx -y
+```
+
+Create a new config file:
+
+```bash
+sudo nano /etc/nginx/sites-available/sunguard
+```
+
+Paste the following:
+
+```nginx
+server {
+    listen 80;
+    server_name yourdomain.com;
+
+    location / {
+        proxy_pass http://localhost:25595;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+}
+```
+
+Enable the site and restart Nginx:
+
+```bash
+sudo ln -s /etc/nginx/sites-available/sunguard /etc/nginx/sites-enabled/
+sudo systemctl restart nginx
+```
+
+SunGuard is now available at `http://yourdomain.com`.
+
+## Step 5: Run on port 80 directly (alternative)
+
+If you're not using Nginx:
+
+```bash
+SERVER_PORT=80 java -Dterminal.jline=false -Dterminal.ansi=true -jar server.jar
+```
+
+<Note>
+Port 80 must be free and not used by other services like Nginx or Apache.
+</Note>
+
+## Step 6: Configure the firewall (if needed)
+
+```bash
+sudo ufw allow 80/tcp
+sudo ufw allow 25595/tcp
+sudo ufw reload
+```
+
+## Step 7: Keep SunGuard running after you disconnect
+
+<Tabs>
+  <Tab title="screen">
+    ```bash
+    sudo apt install screen -y
+    screen -S sunguard
+    SERVER_PORT=25595 java -Dterminal.jline=false -Dterminal.ansi=true -jar server.jar
+    ```
+
+    Detach with `CTRL + A`, then `D`. Resume with:
+
+    ```bash
+    screen -r sunguard
+    ```
+  </Tab>
+  <Tab title="tmux">
+    ```bash
+    sudo apt install tmux -y
+    tmux new -s sunguard
+    SERVER_PORT=25595 java -Dterminal.jline=false -Dterminal.ansi=true -jar server.jar
+    ```
+
+    Detach with `CTRL + B`, then `D`. Resume with:
+
+    ```bash
+    tmux attach -t sunguard
+    ```
+  </Tab>
+</Tabs>
+
+🎉 SunGuard is now running on your VPS. You can manage it manually or configure a `systemd` service for auto-start. If you'd rather not manage a server, consider [SunGuard Managed Hosting](https://store.sundevs.net/l/sunguard-mh).

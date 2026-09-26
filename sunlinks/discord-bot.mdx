@@ -1,0 +1,45 @@
+---
+title: "Discord Bot"
+description: "Manage short links and analytics from Discord with slash commands."
+icon: "discord"
+---
+
+SunLinks has an optional Discord bot integration that lets users interact with their short links and analytics directly from Discord using slash commands.
+
+<Warning>
+For security and flexibility, SunLinks does not provide a pre-configured bot token. You must configure your own Discord bot in the Discord Developer Portal.
+</Warning>
+
+<Info>
+When a user without an account runs a slash command, an account is created automatically and the bot sends them a direct message with their username and password.
+</Info>
+
+## Setup
+
+<Steps>
+  <Step title="Create a Discord bot">
+    Create an application and bot in the Discord Developer Portal, then copy the **bot token**. See [Create a Discord bot token](/guides/discord-bot-token) for a detailed walkthrough.
+  </Step>
+  <Step title="Configure bot permissions">
+    * Bot permissions: **Send Messages**, **Use Slash Commands**, **Embed Links**
+    * Under **OAuth2 → URL Generator**, select the `bot` and `applications.commands` scopes, and invite the bot to your server with the generated URL
+  </Step>
+  <Step title="Connect the bot to SunLinks">
+    1. Go to the **Discord Integration** page.
+    2. Enter the Discord Bot Token and your Discord User ID.
+    3. Click **Start Bot**.
+
+    Once connected, the bot initializes, slash commands are registered automatically, and the bot becomes active in your server.
+  </Step>
+</Steps>
+
+## Response format
+
+All bot responses use **Discord embeds** for clean, structured presentation, readable statistics and consistent formatting.
+
+## Error handling
+
+* Invalid or expired tokens: bot startup fails with a clear message
+* Unauthorized users: restricted command execution
+* Missing or incorrect parameters: descriptive error responses
+* Internal errors: safe fallback messages without exposing system details

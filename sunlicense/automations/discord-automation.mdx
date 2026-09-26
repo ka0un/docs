@@ -1,0 +1,47 @@
+---
+title: "Discord Automation"
+description: "Let buyers claim license keys through the SunLicense Discord bot."
+icon: "discord"
+---
+
+Once a user receives the designated product-purchased role, they can claim a license key for that product without contacting you.
+
+## Step 1: Set a Product Purchased Role in SunLicense
+
+When creating a product in SunLicense, you can specify a **Product Purchased Discord Role ID**. Give this role to users when they purchase the product through your system or any other sales platform.
+
+<Tabs>
+  <Tab title="New product">
+    1. Go to the **Products** page in the SunLicense dashboard.
+    2. Click **Create Product**.
+    3. Enter all necessary product details.
+    4. Find the **Product Purchased Role ID** field.
+    5. Enter the **Discord Role ID** that represents users who have purchased this product.
+    6. Save the product.
+  </Tab>
+  <Tab title="Existing product">
+    1. Go to the **Products** page.
+    2. Click **Manage Products**.
+    3. Select the product you want to update.
+    4. Find the **Product Purchased Role ID** field.
+    5. Enter or update the **Discord Role ID**.
+    6. Save the changes.
+  </Tab>
+</Tabs>
+
+## Step 2: Assign the role to buyers
+
+Make sure your system (or any other sales platform) grants the **Product Purchased Role** when a user buys the product. The role acts as proof of purchase.
+
+## Step 3: Users claim a license with `/get-license`
+
+Once a user has the **Product Purchased Role**, SunLicense recognizes them as a valid purchaser. To claim a license, they:
+
+1. Join your Discord server.
+2. Make sure they have the required **Product Purchased Role**.
+3. Run the `/get-license` command in the designated channel.
+4. Receive their license key immediately.
+
+<Note>
+Users must have the correct role before running `/get-license`. This automation removes the need for manual license distribution.
+</Note>

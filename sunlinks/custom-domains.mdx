@@ -1,0 +1,44 @@
+---
+title: "Custom Domains"
+description: "Use your own branded domain for short links."
+icon: "globe"
+---
+
+Instead of using the default SunLinks URL, you can set up your own custom domain (for example `go.yourcompany.com`) so your short links use your brand.
+
+## Add a domain
+
+1. Go to **Settings → Domain**.
+2. Click **Add Domain**.
+3. Enter your domain name (for example `links.example.com`).
+4. Choose a **Default Redirect Type** (301 or 302).
+5. Optionally check **Use as primary/default domain**.
+6. Click **Save Domain**.
+
+## DNS setup
+
+<Steps>
+  <Step title="Create an A record">
+    In your DNS provider, create an A record:
+
+    * **Name:** your domain name (for example `links.example.com`)
+    * **IPv4 Address:** the IP address of your SunLinks server
+  </Step>
+  <Step title="Set up a reverse proxy">
+    Use Nginx or Apache to forward traffic from your custom domain to the SunLinks application.
+  </Step>
+  <Step title="Wait for propagation">
+    Wait approximately 15 minutes for DNS changes to propagate.
+  </Step>
+</Steps>
+
+## Verify a domain
+
+1. Go to **Settings → Domain**.
+2. Click **Verify** next to your domain.
+3. SunLinks resolves your domain and checks that its A record matches the server's public IP address.
+4. If verification succeeds, the status changes to **Verified** (green badge). If not, review your DNS settings and try again.
+
+## Primary domain
+
+Marking a domain as **Primary** means all new short links use this domain by default. You can have one primary domain per account.

@@ -1,0 +1,150 @@
+---
+title: "Minecraft Plugins"
+description: "Integrate SunLicense into Spigot and Paper plugins."
+icon: "cube"
+---
+
+## Prerequisites
+
+* Spigot/Paper development environment
+* Maven or Gradle build system
+* SunLicense API credentials
+* Your product ID and license key
+
+## Integration steps
+
+### 1. Add the repository and dependency
+
+**For Maven (`pom.xml`):**
+
+```xml
+<repositories>
+    <repository>
+        <id>sundevs</id>
+        <name>Sundevs Repository</name>
+        <url>https://repo.hapangama.com/releases</url>
+    </repository>
+</repositories>
+
+<dependencies>
+    <dependency>
+        <groupId>com.hapangama</groupId>
+        <artifactId>SunLicenseAPI</artifactId>
+        <version>1.0.3</version>
+    </dependency>
+</dependencies>
+```
+
+### 2. Create a license manager class
+
+```java
+public class LicenseManager {
+    private final JavaPlugin plugin;
+    private SunLicenseAPI licenseApi;
+
+    public LicenseManager(JavaPlugin plugin) {
+        this.plugin = plugin;
+        setupLicense();
+    }
+
+    private void setupLicense() {
+        // Save default config if it doesn't exist
+        plugin.saveDefaultConfig();
+        
+        // Initialize license API
+        licenseApi = SunLicenseAPI.getLicense(
+            plugin.getConfig().getString("license.key"),
+            602, // Your Product Id
+            "1.1.0", // Your Product Version (Plugin Version)
+            "YOUR_API_URL"
+        );
+
+    }
+
+    public void validateLicense() {
+        try {
+            licenseApi.validate();
+            plugin.getLogger().info("License validated successfully!");
+        } catch (IOException e) {
+            plugin.getLogger().severe("License validation failed: " + e.getMessage());
+            Bukkit.getPluginManager().disablePlugin(plugin);
+        }
+    }
+}
+```
+
+### 3. Implement it in your main plugin class
+
+```java
+public class YourPlugin extends JavaPlugin {
+    private LicenseManager licenseManager;
+
+    @Override
+    public void onEnable() {
+        // Initialize license manager
+        licenseManager = new LicenseManager(this);
+        
+        // Validate license
+        licenseManager.validateLicense();
+        
+        // Continue with plugin initialization if license is valid
+        if (isEnabled()) {
+            // Your plugin initialization code
+        }
+    }
+}
+```
+
+### 4. Create the default config
+
+Create `config.yml` in your plugin's resources folder:
+
+```yaml
+license:
+  key: "YOUR-LICENSE-KEY"
+```
+
+### 5. License command (optional)
+
+```java
+public class LicenseCommand implements CommandExecutor {
+    private final LicenseManager licenseManager;
+
+    public LicenseCommand(LicenseManager licenseManager) {
+        this.licenseManager = licenseManager;
+    }
+
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (!sender.hasPermission("yourplugin.license")) {
+            sender.sendMessage("§cNo permission!");
+            return true;
+        }
+
+        if (args.length != 1) {
+            sender.sendMessage("§cUsage: /license <key>");
+            return true;
+        }
+
+        // Update license logic here
+        return true;
+    }
+}
+```
+
+## Common issues and solutions
+
+1. **Plugin won't enable**
+   * Check the license key is properly configured
+   * Verify the product ID matches
+   * Check server connectivity to the license API
+2. **License validation fails**
+   * Confirm the license key hasn't expired
+   * Check the HWID matches
+   * Verify IP restrictions
+3. **Configuration issues**
+   * Ensure `config.yml` is properly formatted
+   * Check all required fields are present
+   * Verify encoding is UTF-8
+
+Need more help? Contact support or check the [Java API documentation](/sunlicense/api-documentation/java-api).

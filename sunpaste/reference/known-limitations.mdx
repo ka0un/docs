@@ -1,0 +1,39 @@
+---
+title: "Known Limitations"
+description: "Important notes and a quick summary for users, admins and developers."
+icon: "triangle-exclamation"
+---
+
+* There is no self-service registration page.
+* The UI does not expose a public feed/search page, so `PUBLIC` and `UNLISTED` differ mainly by policy and intended sharing style, not by a separate browse screen.
+* Playground private mode requires login even for normal public/unlisted viewer links.
+* The Developer API page's `Open API Documentation` button points to a hard-coded external URL instead of your instance.
+* Import keeps the `ownerUsername` stored in the JSON file; imported pastes are not reassigned to the importing user.
+* The admin account is settings-based, not a normal persistent user.
+* `Reset to Defaults` in the Theme tab restores the brand name to `SunCore`.
+* Creating a user without choosing roles relies on a `ROLE_USER` role existing first.
+* The Integrations page path is `/Integrations`, not `/integrations`.
+
+## Summary
+
+<CardGroup cols={3}>
+  <Card title="Users" icon="user">
+    * Open `/`
+    * Write or paste content
+    * Choose visibility, slug, expiration, password, and burn-after-read if needed
+    * Save or share
+    * Use `/view/{slug}` to open the result
+  </Card>
+  <Card title="Admins" icon="user-gear">
+    * Log in at `/login`
+    * Use `/dashboard` for an overview
+    * Use `/settings` for branding, privacy, storage, and backups
+    * Use `/Integrations` for Discord and API keys
+    * Use `/admin/users` and `/admin/roles` to manage access
+  </Card>
+  <Card title="Developers" icon="code">
+    * Generate an API key from `/Integrations`
+    * Use the REST API under `/api/v1/pastes`
+    * Use `/api/docs`, `/swagger-ui.html`, or `/redoc.html` for endpoint docs
+  </Card>
+</CardGroup>

@@ -1,0 +1,358 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "SunDevs Help Center",
+  "colors": {
+    "primary": "#F7A325",
+    "light": "#FFC65C",
+    "dark": "#B85A0C"
+  },
+  "favicon": {
+    "light": "/images/favicon.ico",
+    "dark": "/images/favicon.ico"
+  },
+  "navigation": {
+    "products": [
+      {
+        "product": "General",
+        "icon": "sun",
+        "color": {
+          "light": "#F7A325",
+          "dark": "#FFC65C"
+        },
+        "description": "Guides and support",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "index",
+              "where-to-buy",
+              "license-key"
+            ]
+          },
+          {
+            "group": "Common Guides",
+            "pages": [
+              "guides/discord-bot-token"
+            ]
+          },
+          {
+            "group": "Services & Support",
+            "pages": [
+              "managed-hosting",
+              "support"
+            ]
+          }
+        ]
+      },
+      {
+        "product": "SunLicense",
+        "icon": "key",
+        "color": {
+          "light": "#8B5CF6",
+          "dark": "#A78BFA"
+        },
+        "description": "License management system",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": [
+              "sunlicense/overview",
+              "sunlicense/getting-started/quickstart",
+              "sunlicense/getting-started/vps-setup",
+              "sunlicense/getting-started/dashboard"
+            ]
+          },
+          {
+            "group": "API Reference",
+            "pages": [
+              "sunlicense/api-documentation/license-api",
+              "sunlicense/api-documentation/java-api",
+              "sunlicense/api-documentation/api-v2"
+            ]
+          },
+          {
+            "group": "Automations",
+            "pages": [
+              "sunlicense/automations/builtbybit-automation",
+              "sunlicense/automations/discord-automation"
+            ]
+          },
+          {
+            "group": "Product Integrations",
+            "pages": [
+              "sunlicense/product-integrations/minecraft-plugins",
+              "sunlicense/product-integrations/server-software",
+              "sunlicense/product-integrations/minecraft-mods",
+              "sunlicense/product-integrations/discord-bots",
+              "sunlicense/product-integrations/fivem-projects",
+              "sunlicense/product-integrations/php-projects",
+              "sunlicense/product-integrations/python-projects",
+              "sunlicense/product-integrations/javascript-projects",
+              "sunlicense/product-integrations/lua-projects"
+            ]
+          },
+          {
+            "group": "Operations",
+            "pages": [
+              "sunlicense/services/managed-hosting",
+              "sunlicense/other/disaster-management"
+            ]
+          }
+        ]
+      },
+      {
+        "product": "SunGuard",
+        "icon": "shield-halved",
+        "color": {
+          "light": "#16A34A",
+          "dark": "#4ADE80"
+        },
+        "description": "Code obfuscator",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": [
+              "sunguard/overview",
+              "sunguard/setup/pterodactyl",
+              "sunguard/setup/vps",
+              "sunguard/setup/pc-app"
+            ]
+          },
+          {
+            "group": "Guides",
+            "pages": [
+              "sunguard/guides/obfuscation-tips"
+            ]
+          }
+        ]
+      },
+      {
+        "product": "SunPaste",
+        "icon": "paste",
+        "color": {
+          "light": "#CA8A04",
+          "dark": "#FACC15"
+        },
+        "description": "Paste sharing system",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": [
+              "sunpaste/overview",
+              "sunpaste/quickstart",
+              "sunpaste/installation",
+              "sunpaste/core-concepts"
+            ]
+          },
+          {
+            "group": "Using SunPaste",
+            "pages": [
+              "sunpaste/core-concepts/home-page",
+              "sunpaste/core-concepts/paste-view",
+              "sunpaste/core-concepts/login-page"
+            ]
+          },
+          {
+            "group": "Administration",
+            "pages": [
+              "sunpaste/admin/overview",
+              "sunpaste/admin/dashboard",
+              "sunpaste/admin/settings",
+              "sunpaste/admin/integrations",
+              "sunpaste/admin/user-management",
+              "sunpaste/admin/role-management"
+            ]
+          },
+          {
+            "group": "Reference",
+            "pages": [
+              "sunpaste/reference/api-and-sharing",
+              "sunpaste/reference/storage-and-backups",
+              "sunpaste/reference/known-limitations"
+            ]
+          }
+        ]
+      },
+      {
+        "product": "SunLinks",
+        "icon": "link",
+        "color": {
+          "light": "#DB2777",
+          "dark": "#F472B6"
+        },
+        "description": "Link shortener",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": [
+              "sunlinks/overview",
+              "sunlinks/quickstart"
+            ]
+          },
+          {
+            "group": "Dashboard",
+            "pages": [
+              "sunlinks/dashboard/overview",
+              "sunlinks/dashboard/creating-links",
+              "sunlinks/dashboard/managing-links",
+              "sunlinks/dashboard/share-previews",
+              "sunlinks/dashboard/analytics",
+              "sunlinks/dashboard/settings"
+            ]
+          },
+          {
+            "group": "Configuration",
+            "pages": [
+              "sunlinks/custom-domains",
+              "sunlinks/integrations",
+              "sunlinks/discord-bot"
+            ]
+          }
+        ]
+      },
+      {
+        "product": "SunStore",
+        "icon": "store",
+        "color": {
+          "light": "#2563EB",
+          "dark": "#60A5FA"
+        },
+        "description": "Digital product store",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": [
+              "sunstore/overview",
+              "sunstore/quickstart",
+              "sunstore/vps-setup"
+            ]
+          }
+        ]
+      },
+      {
+        "product": "SunBot",
+        "icon": "robot",
+        "color": {
+          "light": "#111827",
+          "dark": "#E5E7EB"
+        },
+        "description": "All-in-one Discord bot",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": [
+              "sunbot/overview",
+              "sunbot/quickstart",
+              "sunbot/vps-setup"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "logo": {
+    "light": "/images/logo-light.svg",
+    "dark": "/images/logo-dark.svg"
+  },
+  "navbar": {
+    "links": [
+      {
+        "href": "https://store.sundevs.net",
+        "label": "Store"
+      },
+      {
+        "label": "Support",
+        "href": "https://go.sundevs.net/discord"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Dashboard",
+      "href": "https://dashboard.sundevs.net"
+    }
+  },
+  "contextual": {
+    "options": [
+      "copy",
+      "view",
+      "chatgpt",
+      "claude",
+      "perplexity",
+      "mcp",
+      "cursor",
+      "vscode"
+    ]
+  },
+  "footer": {
+    "socials": {
+      "linkedin": "https://www.linkedin.com/company/sundevs-mc",
+      "discord": "https://go.sundevs.net/discord",
+      "website": "https://sundevs.net",
+      "youtube": "https://youtube.com/@Sun-Devs"
+    }
+  },
+  "description": "Documentation and help for SunLicense, SunGuard, SunPaste, SunLinks, SunStore and SunBot.",
+  "redirects": [
+    {
+      "source": "/readme",
+      "destination": "/sunlicense/overview",
+      "permanent": true
+    },
+    {
+      "source": "/getting-started/:slug*",
+      "destination": "/sunlicense/getting-started/:slug*",
+      "permanent": true
+    },
+    {
+      "source": "/api-documentation/:slug*",
+      "destination": "/sunlicense/api-documentation/:slug*",
+      "permanent": true
+    },
+    {
+      "source": "/automations/:slug*",
+      "destination": "/sunlicense/automations/:slug*",
+      "permanent": true
+    },
+    {
+      "source": "/product-integrations/:slug*",
+      "destination": "/sunlicense/product-integrations/:slug*",
+      "permanent": true
+    },
+    {
+      "source": "/services/:slug*",
+      "destination": "/sunlicense/services/:slug*",
+      "permanent": true
+    },
+    {
+      "source": "/other/:slug*",
+      "destination": "/sunlicense/other/:slug*",
+      "permanent": true
+    },
+    {
+      "source": "/welcome",
+      "destination": "/sunguard/overview",
+      "permanent": true
+    },
+    {
+      "source": "/setup/pterodactyl-setup",
+      "destination": "/sunguard/setup/pterodactyl",
+      "permanent": true
+    },
+    {
+      "source": "/vps-setup",
+      "destination": "/sunguard/setup/vps",
+      "permanent": true
+    },
+    {
+      "source": "/pc-app",
+      "destination": "/sunguard/setup/pc-app",
+      "permanent": true
+    },
+    {
+      "source": "/obfuscation-guides/general-tips",
+      "destination": "/sunguard/guides/obfuscation-tips",
+      "permanent": true
+    }
+  ]
+}

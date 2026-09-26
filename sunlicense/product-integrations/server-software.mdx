@@ -1,0 +1,117 @@
+---
+title: "Server Software"
+description: "Integrate SunLicense into Minecraft server software."
+icon: "server"
+---
+
+## Prerequisites
+
+* Java development environment
+* Maven/Gradle
+* Your Minecraft server project
+* SunLicense API credentials
+
+## Integration steps
+
+### 1. Add dependencies
+
+Add this to your `pom.xml`:
+
+```xml
+<repositories>
+    <repository>
+        <id>sundevs</id>
+        <name>Sundevs Repository</name>
+        <url>https://repo.hapangama.com/releases</url>
+    </repository>
+</repositories>
+
+<dependencies>
+    <dependency>
+        <groupId>com.hapangama</groupId>
+        <artifactId>SunLicenseAPI</artifactId>
+        <version>1.0.3</version>
+    </dependency>
+</dependencies>
+```
+
+### 2. Create a license validator
+
+```java
+public class ServerLicenseManager {
+    private final SunLicenseAPI licenseApi;
+    private final Server server;
+
+    public ServerLicenseManager(Server server, String licenseKey, int productId) {
+        this.server = server;
+        this.licenseApi = SunLicenseAPI.getLicense(
+            licenseKey,
+            productId,
+            "1.0.0",
+            "YOUR_API_URL"
+        );
+    }
+
+    public boolean validateLicense() {
+        try {
+            licenseApi.validate();
+            return true;
+        } catch (IOException e) {
+            server.getLogger().severe("License validation failed: " + e.getMessage());
+            return false;
+        }
+    }
+}
+```
+
+### 3. Validate on server startup
+
+```java
+public class CustomServer {
+    private ServerLicenseManager licenseManager;
+
+    public void startServer() {
+        // Initialize license manager
+        licenseManager = new ServerLicenseManager(
+            this,
+            "YOUR-LICENSE-KEY",
+            YOUR_PRODUCT_ID
+        );
+
+        // Validate license before server starts
+        if (!licenseManager.validateLicense()) {
+            System.err.println("Invalid license - Server startup aborted");
+            System.exit(1);
+        }
+
+        // Continue with server startup
+        initializeServer();
+    }
+}
+```
+
+## Best practices
+
+1. **Startup validation**
+   * Validate the license before server initialization
+   * Implement graceful shutdown on validation failure
+   * Log validation status
+2. **Regular validation**
+   * Implement periodic checks
+   * Handle network issues gracefully
+   * Cache validation results
+3. **Error handling**
+   * Clear error messages
+   * Proper logging
+   * Graceful shutdown procedures
+
+## Troubleshooting
+
+1. **Startup failures**
+   * Check license key validity
+   * Verify network connectivity
+   * Confirm the product ID
+2. **Runtime issues**
+   * Monitor validation logs
+   * Check for network problems
+   * Verify the license hasn't expired

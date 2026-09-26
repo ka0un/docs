@@ -1,0 +1,393 @@
+---
+title: "API V2"
+description: "Secure RESTful interface for managing products, licenses, blacklists, license requests, and customers."
+icon: "code"
+---
+
+## Authentication & intents
+
+* **API token:** All endpoints (except `/healthy`) require an API token in the request header: `TOKEN: <your-api-token>`
+* **Intents:** Each endpoint requires specific intents. If your token lacks the required intent, you'll receive an error response with a list of accepted intents.
+
+## Error handling
+
+All error responses follow this structure:
+
+```json
+{
+  "message": "invalid token or missing required intent",
+  "accepted_intents": ["PRODUCTS_READ", "PRODUCTS_READ_WRITE", ...]
+}
+```
+
+Check the `message` and `accepted_intents` fields to understand why a request failed.
+
+<Warning>
+For every update (PUT) call, always perform a GET first and pass all fields (including unchanged ones) in your PUT request. Fields not included in the PUT body may be lost.
+</Warning>
+
+## Endpoints
+
+### 1. Health & ping
+
+**`GET /api/v2/healthy`**
+
+* **Description:** Health check endpoint. No authentication required.
+* **Response:** `200 OK` — `"healthy"`
+
+**`GET /api/v2/ping`**
+
+* **Description:** Ping endpoint to test authentication.
+* **Headers:** `TOKEN: <api-token>`
+* **Response:** `200 OK` — `"pong"`, or `401 Unauthorized` — error response
+
+### 2. Product API
+
+**`GET /api/v2/products`**
+
+* **Intents:** `PRODUCTS_READ`, `PRODUCTS_READ_WRITE`, `ALL_READ`, `ALL_READ_WRITE`
+* **Response:** List of products
+
+**`GET /api/v2/products/{id}`**
+
+* **Intents:** Same as above
+* **Response:** Product object
+
+**`POST /api/v2/products`**
+
+* **Intents:** `PRODUCTS_READ_WRITE`, `ALL_READ_WRITE`
+* **Body:**
+
+```json
+{
+  "name": "Test Product",
+  "description": "1",
+  "productType": "OTHER",
+  "productTypeOther": "Test Type",
+  "defaultMaxIPs": 4,
+  "defaultMaxHWIDs": 3
+}
+```
+
+* **Note:** Do not include `id`, `createdDate`, or `updatedDate`.
+
+**`PUT /api/v2/products/{id}`**
+
+* **Intents:** Same as POST
+* **Body:** All product fields (see GET response)
+
+**`DELETE /api/v2/products/{id}`**
+
+* **Intents:** Same as POST
+
+**Sample product response:**
+
+```json
+{
+  "id": 602,
+  "name": "Test Product",
+  "description": "1",
+  "productType": "OTHER",
+  "productTypeOther": "Test Type",
+  "createdDate": "2024-11-16T09:54:23.048+00:00",
+  "updatedDate": "2024-11-16T09:54:23.048+00:00",
+  "defaultMaxIPs": 4,
+  "defaultMaxHWIDs": 3,
+  "roleId": null,
+  "purchaseRoleId": null,
+  "url": null,
+  "imageUrl": null
+}
+```
+
+### 3. License API
+
+**`GET /api/v2/licenses`**
+
+* **Intents:** `LICENSES_READ`, `LICENSES_READ_WRITE`, `ALL_READ`, `ALL_READ_WRITE`
+
+**`GET /api/v2/licenses/{id}`**
+
+* **Intents:** Same as above
+
+**`POST /api/v2/licenses`**
+
+* **Intents:** `LICENSES_READ_WRITE`, `ALL_READ_WRITE`
+* **Body:**
+
+```json
+{
+  "productId": 1552,
+  "licenseType": "TEMPORARY",
+  "licensePlatform": null,
+  "licensePlatformOther": "",
+  "ownerPlatformId": "",
+  "expiryDate": "2025-05-31T18:30:00.000+00:00",
+  "maxIPs": 5,
+  "maxHWIDs": 5,
+  "ownerDiscordId": "123456789012345678",
+  "ownerDiscordUsername": "example_user",
+  "notes": ""
+}
+```
+
+* **Note:** Do not include `id`, `createdDate`, `updatedDate`, `customer`, or `licenseKey` (the license key is generated automatically).
+
+**`GET /api/v2/licenses/by-license-key/{licenseKey}`**
+
+* **Intents:** Same as above
+* **Description:** Get a single license by its license key
+* **Response:** License object, or 404 if not found
+
+**`GET /api/v2/licenses/by-customer-email/{email}`**
+
+* **Intents:** Same as above
+* **Description:** Get all licenses associated with a customer email address
+* **Response:** Array of license objects
+
+**`GET /api/v2/licenses/by-platform/{platform}/{platformId}`**
+
+* **Intents:** Same as above
+* **Description:** Get all licenses for a specific platform and platform ID
+* **Query parameters:** `productId` (optional): filter by product ID
+* **Path parameters:**
+  * `platform`: One of `SPIGOT`, `FORGE`, `BUKKIT`, `BUILT_BY_BIT`, `SOURCE_EXCHANGE`, `DISCORD`, `OTHER`
+  * `platformId`: The platform-specific user ID
+* **Response:** Array of license objects
+
+**`GET /api/v2/licenses/by-customer-id/{customerId}`**
+
+* **Intents:** Same as above
+* **Description:** Get all licenses for a specific customer ID
+* **Response:** Array of license objects
+
+**`GET /api/v2/licenses/by-product-id/{productId}`**
+
+* **Intents:** Same as above
+* **Description:** Get all licenses for a specific product
+* **Response:** Array of license objects
+
+**`GET /api/v2/licenses/by-discord-id/{discordId}`**
+
+* **Intents:** Same as above
+* **Description:** Get all licenses associated with a Discord user ID
+* **Response:** Array of license objects
+
+**`PUT /api/v2/licenses/{id}`**
+
+* **Intents:** Same as POST
+* **Body:** All license fields (see GET response)
+
+**`DELETE /api/v2/licenses/{id}`**
+
+* **Intents:** Same as POST
+
+**Sample license response:**
+
+```json
+{
+  "id": 4353,
+  "licenseKey": "U12BPHB1VO1CB73N773B",
+  "productId": 1552,
+  "licenseType": "TEMPORARY",
+  "licensePlatform": null,
+  "licensePlatformOther": "",
+  "ownerPlatformId": "",
+  "createdDate": "2025-06-15T15:00:37.243+00:00",
+  "updatedDate": "2025-06-23T05:31:36.707+00:00",
+  "expiryDate": "2025-05-31T18:30:00.000+00:00",
+  "maxIPs": 5,
+  "maxHWIDs": 5,
+  "totalRequests": null,
+  "ownerDiscordId": "123456789012345678",
+  "ownerDiscordUsername": "example_user",
+  "licenseStatus": "EXPIRED",
+  "hwids": [],
+  "ips": [],
+  "notes": "",
+  "customer": { ... },
+  "productIdString": "1552"
+}
+```
+
+### 4. Blacklist API
+
+**`GET /api/v2/blacklists`**
+
+* **Intents:** `BLACKLISTS_READ`, `BLACKLISTS_READ_WRITE`, `ALL_READ`, `ALL_READ_WRITE`
+
+**`GET /api/v2/blacklists/{id}`**
+
+* **Intents:** Same as above
+
+**`POST /api/v2/blacklists`**
+
+* **Intents:** `BLACKLISTS_READ_WRITE`, `ALL_READ_WRITE`
+* **Body:**
+
+```json
+{
+  "licenseDataType": "HWID",
+  "data": "unique-hardware-id3",
+  "isForAllProducts": true,
+  "reason": "x"
+}
+```
+
+* **Note:** Do not include `id`, `createdAt`, or `updatedAt`.
+
+**`PUT /api/v2/blacklists/{id}`**
+
+* **Intents:** Same as POST
+* **Body:** All blacklist fields (see GET response)
+
+**`DELETE /api/v2/blacklists/{id}`**
+
+* **Intents:** Same as POST
+
+**Sample blacklist response:**
+
+```json
+{
+  "id": 1,
+  "licenseDataType": "HWID",
+  "data": "unique-hardware-id3",
+  "isForAllProducts": true,
+  "productId": null,
+  "reason": "x",
+  "createdAt": "2025-02-13T07:41:53.226+00:00",
+  "updatedAt": "2025-02-13T07:41:53.226+00:00"
+}
+```
+
+### 5. License Request API
+
+**`GET /api/v2/requests`**
+
+* **Intents:** `REQUESTS_READ`, `ALL_READ`, `ALL_READ_WRITE`
+
+**`GET /api/v2/requests/{id}`**
+
+* **Intents:** Same as above
+
+**Sample license request response:**
+
+```json
+{
+  "id": 802,
+  "licenseId": null,
+  "licenseKey": "FE72URFX4RKWM38T0ARO",
+  "productId": 602,
+  "productVersion": "1.0.0",
+  "ip": "0:0:0:0:0:0:0:1",
+  "hwid": "unique-hardware-id7",
+  "macAddress": "00:1A:2B:3C:4D:5E",
+  "operatingSystem": "Windows",
+  "operatingSystemVersion": "10",
+  "operatingSystemArchitecture": "x64",
+  "javaVersion": "17",
+  "requestDate": "2025-01-27T17:28:13.173+00:00",
+  "requestType": "Valid",
+  "responseType": "Success",
+  "blockReason": null,
+  "notes": null,
+  "remarks": null,
+  "valid": true,
+  "successful": true,
+  "rateLimited": false,
+  "blocked": false,
+  "spam": false
+}
+```
+
+### 6. Customer API
+
+**`GET /api/v2/customers`**
+
+* **Intents:** `CUSTOMERS_READ`, `ALL_READ`, `ALL_READ_WRITE`
+
+**`GET /api/v2/customers/{id}`**
+
+* **Intents:** Same as above
+
+**Sample customer response:**
+
+```json
+{
+  "id": 503,
+  "firstName": null,
+  "lastName": null,
+  "username": "example_user",
+  "email": null,
+  "phoneNumber": null,
+  "profilePictureUrl": "https://cdn.discordapp.com/avatars/123456789012345678/avatar.png",
+  "passwordHash": null,
+  "role": null,
+  "status": null,
+  "createdAt": null,
+  "lastLoginAt": null,
+  "discordId": 123456789012345678,
+  "discordUsername": "example_user",
+  "discordAvatarUrl": null,
+  "discordAccessToken": null,
+  "discordRefreshToken": null,
+  "discordTokenExpiry": null,
+  "spigotId": null,
+  "spigotUsername": null,
+  "forgeId": null,
+  "forgeUsername": null,
+  "bukkitId": null,
+  "bukkitUsername": null,
+  "builtByBitId": "000000",
+  "builtByBitUsername": null,
+  "sourceExchangeId": null,
+  "sourceExchangeUsername": null,
+  "ploymartId": null,
+  "ploymartUsername": null,
+  "modrinthId": null,
+  "modrinthUsername": null,
+  "curseforgeId": null,
+  "curseforgeUsername": null,
+  "notes": null
+}
+```
+
+### 7. License Validation API
+
+**`POST /api/v2/validate`**
+
+* **Intents:** `LICENSE_VALIDATE`, `ALL_READ_WRITE`
+* **Body and response:** Same as the [V1 validation request](/sunlicense/api-documentation/license-api).
+
+## Enum values
+
+<AccordionGroup>
+  <Accordion title="ProductType (Product)">
+    `MINECRAFT_JAVA_PLUGIN`, `MINECRAFT_JAVA_MOD`, `MINECRAFT_BEDROCK_PLUGIN`, `MINECRAFT_BEDROCK_MOD`, `MINECRAFT_SERVER_SETUP`, `WEB_APPLICATION`, `DESKTOP_APPLICATION`, `MOBILE_APPLICATION`, `OTHER`
+  </Accordion>
+  <Accordion title="LicenseType (License)">
+    `TEMPORARY`, `PERMANENT`
+  </Accordion>
+  <Accordion title="LicenseStatus (License)">
+    `ACTIVE`, `EXPIRED`, `DEACTIVATED`, `DELETED`
+  </Accordion>
+  <Accordion title="LicensePlatform (License)">
+    `SPIGOT`, `FORGE`, `BUKKIT`, `BUILT_BY_BIT`, `SOURCE_EXCHANGE`, `DISCORD`, `OTHER`
+  </Accordion>
+  <Accordion title="LicenseDataType (Blacklist)">
+    `IP`, `HWID`
+  </Accordion>
+  <Accordion title="ApiIntent (Token permissions)">
+    `PRODUCTS_READ`, `PRODUCTS_READ_WRITE`, `LICENSE_VALIDATE`, `LICENSES_READ`, `LICENSES_READ_WRITE`, `BLACKLISTS_READ`, `BLACKLISTS_READ_WRITE`, `REQUESTS_READ`, `CUSTOMERS_READ`, `ALL_READ`, `ALL_READ_WRITE`
+  </Accordion>
+</AccordionGroup>
+
+## General notes
+
+* Always include the `TOKEN` header for all endpoints except `/healthy`.
+* For all update (PUT) operations, fetch the current object first and send all fields in your update request.
+* Error responses always include a `message` and a list of `accepted_intents`.
+* Don't send `id`, `createdDate`, `updatedDate`, or other system-generated fields when creating new objects.
+* When creating licenses, don't send the license key or customer object; these are handled by the system.
+
+For further questions, contact the SunLicense [support team](https://go.sundevs.net/discord).

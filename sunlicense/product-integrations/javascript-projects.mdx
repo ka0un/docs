@@ -1,0 +1,176 @@
+---
+title: "JavaScript Projects"
+description: "Integrate SunLicense into Node.js and browser applications."
+icon: "js"
+---
+
+## Prerequisites
+
+* Node.js environment (for backend) or a modern web browser (for frontend)
+* npm or yarn package manager
+* SunLicense API credentials
+
+## Integration steps
+
+### 1. Backend implementation (Node.js)
+
+```javascript
+const axios = require('axios');
+
+class SunLicenseValidator {
+    constructor(licenseKey, productId, version = '1.0.0') {
+        this.licenseKey = licenseKey;
+        this.productId = productId;
+        this.version = version;
+        this.apiUrl = 'YOUR_API_URL/api/v1/validate';
+    }
+
+    async validate() {
+        try {
+            const payload = {
+                licenseKey: this.licenseKey,
+                productId: this.productId,
+                productVersion: this.version,
+                hwid: this.getHWID(), // Optional
+                operatingSystem: process.platform,
+                operatingSystemVersion: process.version
+            };
+
+            const response = await axios.post(this.apiUrl, payload, {
+                headers: { 'Content-Type': 'application/json' }
+            });
+
+            return response.status === 200;
+        } catch (error) {
+            throw new Error(`License validation failed: ${error.message}`);
+        }
+    }
+
+    getHWID() {
+        // Implement your HWID generation logic here
+        return 'YOUR-HWID';
+    }
+}
+
+// Usage example
+const validator = new SunLicenseValidator('YOUR-LICENSE-KEY', YOUR_PRODUCT_ID);
+validator.validate()
+    .then(() => console.log('License valid!'))
+    .catch(error => console.error(error));
+```
+
+### 2. Frontend implementation (browser)
+
+```javascript
+class SunLicenseValidator {
+    constructor(licenseKey, productId, version = '1.0.0') {
+        this.licenseKey = licenseKey;
+        this.productId = productId;
+        this.version = version;
+        this.apiUrl = 'YOUR_API_URL/api/v1/validate';
+    }
+
+    async validate() {
+        try {
+            const payload = {
+                licenseKey: this.licenseKey,
+                productId: this.productId,
+                productVersion: this.version,
+                operatingSystem: navigator.platform,
+                operatingSystemVersion: navigator.userAgent
+            };
+
+            const response = await fetch(this.apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            return true;
+        } catch (error) {
+            throw new Error(`License validation failed: ${error.message}`);
+        }
+    }
+}
+```
+
+<Warning>
+Never expose your license key in frontend code. Prefer server-side validation.
+</Warning>
+
+### 3. Framework integrations
+
+<Tabs>
+  <Tab title="Express.js middleware">
+    ```javascript
+    function licensingMiddleware(licenseKey, productId) {
+        const validator = new SunLicenseValidator(licenseKey, productId);
+        
+        return async (req, res, next) => {
+            try {
+                await validator.validate();
+                next();
+            } catch (error) {
+                res.status(403).json({ error: 'Invalid license' });
+            }
+        };
+    }
+
+    // Usage in Express app
+    app.use(licensingMiddleware('YOUR-LICENSE-KEY', YOUR_PRODUCT_ID));
+    ```
+  </Tab>
+  <Tab title="React component">
+    ```javascript
+    import React, { useState, useEffect } from 'react';
+
+    function LicenseProtectedApp({ licenseKey, productId, children }) {
+        const [isValid, setIsValid] = useState(false);
+        const [error, setError] = useState(null);
+
+        useEffect(() => {
+            const validator = new SunLicenseValidator(licenseKey, productId);
+            validator.validate()
+                .then(() => setIsValid(true))
+                .catch(err => setError(err.message));
+        }, [licenseKey, productId]);
+
+        if (error) return <div>License Error: {error}</div>;
+        if (!isValid) return <div>Validating license...</div>;
+        return children;
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## Best practices
+
+1. **Security**
+   * Never expose the license key in frontend code
+   * Implement server-side validation
+   * Use secure communication (HTTPS)
+2. **Error handling**
+   * Implement proper error handling
+   * Show user-friendly error messages
+   * Log validation failures
+3. **Performance**
+   * Cache validation results
+   * Implement retry mechanisms
+   * Handle offline scenarios
+
+## Common issues and solutions
+
+1. **CORS issues**
+   * Configure proper CORS headers
+   * Use a proxy for API requests
+   * Handle preflight requests
+2. **Network problems**
+   * Implement timeout handling
+   * Add retry logic
+   * Cache validation results

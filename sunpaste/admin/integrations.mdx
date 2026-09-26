@@ -1,0 +1,78 @@
+---
+title: "Integrations"
+description: "Connect a Discord bot and generate REST API keys."
+icon: "plug"
+---
+
+The Integrations page lives at `/Integrations` (capital `I`) and has two tabs: `Discord` and `Developer API`.
+
+## Discord
+
+Connect SunPaste to a Discord bot. Controls:
+
+* `Discord Token`
+* `Admin Role`
+* `Commands Alert Channel`
+* `Notifications Alert Channel`
+* `Save Discord Settings`
+* `Start Discord Bot`
+* `Discord Developer Portal`
+
+<Steps>
+  <Step title="Enter a bot token">
+    Enter your Discord bot token. See [Create a Discord bot token](/guides/discord-bot-token).
+  </Step>
+  <Step title="Start the bot">
+    Click `Start Discord Bot`. Once it's running, the role and channel dropdowns become usable.
+  </Step>
+  <Step title="Choose role and channels">
+    Choose the Discord role and channels.
+  </Step>
+  <Step title="Save">
+    Click `Save Discord Settings`.
+  </Step>
+</Steps>
+
+### Discord commands
+
+| Command | What it does |
+| --- | --- |
+| `/help` | Shows help |
+| `/paste create` | Opens a modal for paste content |
+| `/paste file` | Creates a paste from an attached file |
+| `/paste get` | Returns a paste URL by slug |
+| `/paste list` | Shows the current Discord user's pastes created through Discord |
+| `/paste delete` | Deletes a paste created by the same Discord user |
+| `/paste report` | Sends an alert about a paste to the admin alert channel |
+| `Create Paste` (message context menu) | Creates a paste from a message |
+
+Discord-created pastes are public, and linked to the Discord user ID for listing and delete checks.
+
+## Developer API
+
+Generate API keys for the REST API. The tab includes a `curl` example, an `Open API Documentation` button, a form to create a labeled API key, a list of active keys, and `Revoke` buttons.
+
+<Steps>
+  <Step title="Label the key">
+    Enter a label, or leave it blank.
+  </Step>
+  <Step title="Generate">
+    Click `Generate API Key`.
+  </Step>
+  <Step title="Copy it">
+    Copy the key immediately. The plain-text key is shown only once; only its hash is stored.
+  </Step>
+  <Step title="Use it">
+    Send it in the `X-API-Key` header.
+  </Step>
+</Steps>
+
+```bash
+curl -H "X-API-Key: spk_your_key_here" http://localhost:8080/api/v1/pastes
+```
+
+Revoking a key marks it inactive.
+
+<Note>
+The `Open API Documentation` button points to a hard-coded external Swagger URL. For your own instance, use `/api/docs`, `/swagger-ui.html`, or `/redoc.html` instead. See [API & Sharing](/sunpaste/reference/api-and-sharing).
+</Note>

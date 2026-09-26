@@ -1,0 +1,80 @@
+---
+title: "Create a Discord Bot Token"
+description: "Create a Discord application, get a bot token, enable intents and invite the bot to your server."
+icon: "discord"
+---
+
+Several SunDevs products (such as SunPaste and SunLinks) can connect to your own Discord bot. Setting one up requires a few specific toggles in the [Discord Developer Portal](https://discord.com/developers/applications).
+
+## Phase 1: Create the application
+
+Before you have a bot, you need an application (the shell that holds your bot).
+
+1. Log in to the **Discord Developer Portal**.
+2. Click **New Application** in the top right.
+3. **Name your bot.** This is the name shown in the Developer Portal. You can change the bot's display name later.
+4. Agree to the terms and click **Create**.
+
+<Frame>
+  <img src="/images/sunpaste/019ddde2b6bb72fd-image.png" alt="Create a new application" />
+</Frame>
+
+## Phase 2: Set up the bot user and token
+
+1. In the left sidebar, click **Bot**.
+2. **Add Bot:** depending on the portal version, you may need to click "Add Bot", or it may be created automatically.
+3. **Get your token:** under "Token", click **Reset Token** (or **Copy** if it's visible).
+4. **Customize:** upload an icon and change the bot's display username.
+
+<Warning>
+Treat your token like a password. Anyone with your token has full control over your bot. Never share it or upload it to public sites like GitHub.
+</Warning>
+
+<Frame>
+  <img src="/images/sunpaste/019dde0deeb8710e-image.png" alt="Bot token" />
+</Frame>
+
+Scroll down to the **Bot Permissions** section and enable the checkboxes as shown:
+
+<Frame>
+  <img src="/images/sunpaste/019dde1f22c275b4-image.png" alt="Bot permissions" />
+</Frame>
+
+## Phase 3: Enable intents (crucial)
+
+Modern Discord bots won't work correctly unless you tell Discord what data they need.
+
+1. On the **Bot** tab, scroll down to **Privileged Gateway Intents**.
+2. Turn **on**:
+   * **Presence Intent**: to see user statuses.
+   * **Server Members Intent**: to see the member list or welcome new users.
+   * **Message Content Intent** (required): lets your bot read the text of messages sent to it.
+3. Click **Save Changes**.
+
+<Frame>
+  <img src="/images/sunpaste/019dde138edf7219-image.png" alt="Privileged gateway intents" />
+</Frame>
+
+## Phase 4: Invite the bot to your server
+
+1. Go to **OAuth2** in the left sidebar, then select **URL Generator**.
+2. Under **Scopes**, check `bot` and `applications.commands` (for slash commands).
+3. Under **Bot Permissions**, select what the bot is allowed to do (for example *Send Messages, Read Message History, Embed Links*), as shown below.
+
+<Frame>
+  <img src="/images/sunpaste/019dde220c7e71c3-image.png" alt="OAuth2 URL generator scopes" />
+</Frame>
+
+<Frame>
+  <img src="/images/sunpaste/019dde23c89b712d-image.png" alt="Bot permissions in the URL generator" />
+</Frame>
+
+4. Copy the generated URL at the bottom of the page.
+
+<Frame>
+  <img src="/images/sunpaste/019de1bb6b6f7048-image.png" alt="Generated invite URL" />
+</Frame>
+
+5. Open the URL in a new tab, select your server from the dropdown and click **Continue**, then **Authorize**.
+
+All done ✨ Paste the token into your product's Discord integration settings.

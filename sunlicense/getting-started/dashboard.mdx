@@ -1,0 +1,106 @@
+---
+title: "Dashboard"
+description: "Manage products, licenses, blacklists and license requests in the SunLicense web dashboard."
+icon: "gauge"
+---
+
+<Frame>
+  <iframe className="w-full aspect-video rounded-xl" src="https://www.youtube.com/embed/3JVEtzH3et4" title="SunLicense Dashboard" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+</Frame>
+
+The **Web Dashboard** is the central interface for managing your license system. You can access it via your server address (for example, `http://{serverip}:{port}`). Authentication is required, and access is restricted to users with the `ROLE_ADMIN` permission.
+
+## 1. Product management
+
+The **Products** view lets you define the software or resources that your license keys validate against.
+
+### 1.1. Creating a product
+
+In the **Create Products** tab, define the foundational settings for all future licenses of this product:
+
+| Field | Description |
+| --- | --- |
+| **Name & Description** | Standard identifier fields. Name is required and must be unique. |
+| **Product Type** | Choose from `MINECRAFT_JAVA_PLUGIN`, `WEB_APPLICATION`, `DISCORD_BOTS`, or `OTHER`. If `OTHER` is selected, an **Other Product Type** text field appears (required). |
+| **Default Max IPs** | Max number of unique IPs per license. `-1` = unlimited, `0` = none. Default: **5**. |
+| **Default Max HWIDs** | Max number of Hardware IDs per license. `-1` = unlimited, `0` = none. Default: **5**. |
+| **Product Role Id** | Discord Role ID assigned when a user redeems a license. |
+| **Product Purchase Role Id** | Discord Role ID marking a user as a purchaser (required for `/get-license` in Discord). |
+| **Product URL / Image URL** | Used for display in the Customer Dashboard. |
+
+### 1.2. Managing and updating products
+
+The **Manage Products** tab displays products in a grid:
+
+* **Updating**: Edit properties such as default limits, roles, and names.
+* **Deletion**: Products with active licenses **cannot** be deleted. Attempting it shows the error `"Product has licenses, cannot delete"`.
+
+## 2. License management
+
+The **Licenses** view lets you generate, modify, and track license keys.
+
+### 2.1. Creating a license
+
+The **Create License** tab handles key generation and assignment.
+
+| Field | Description |
+| --- | --- |
+| **License Key** | Auto-generated (masked `XXXX-XXXX-...`). Hover to view, click to copy. |
+| **Product** | Select a product. Defaults for Max IPs/HWIDs auto-populate. |
+| **License Type & Expiry** | Choose `PERMANENT` or `TEMPORARY`. Temporary requires a duration or custom date. |
+| **Platform Details** | Select a platform (`SPIGOT`, `BUILT_BY_BIT`, `DISCORD`, `OTHER`) and enter the Platform User ID. |
+| **Owner Details** | Provide the user's Discord ID and username. If the bot is active, a dropdown may be available. |
+| **Initial Data/Status** | Set comma-separated IPs/HWIDs. Status defaults to `ACTIVE`. |
+| **Discord DM Prompt** | If a Discord ID is provided, you'll be prompted to send the key via DM. |
+
+### 2.2. Managing and updating licenses
+
+In the **Manage Licenses** tab:
+
+* **Search & Filter**: Search by keywords, product, user, and more.
+* **Editing**: Clicking a license opens an **Edit License** dialog, where you can update owner info, platform, limits, or status.
+* **Manual Data Management**: Edit IP/HWID lists directly (comma-separated).
+* **Status Updates**: Set to `ACTIVE`, `EXPIRED`, `DEACTIVATED`, or `DELETED`.
+* **Deletion**: Use the **Delete** button in the Edit dialog. You'll be asked to confirm before the license is permanently deleted.
+
+## 3. Blacklist management
+
+Blacklists prevent specific devices or IPs from validating licenses.
+
+### 3.1. Creating a blacklist entry
+
+Use the **Create Blacklist** tab:
+
+1. **Type**: Select `IP` or `HWID`.
+2. **Data**: Enter the IP or Hardware ID.
+3. **Scope**: `All Products` or `Specific Product` (dropdown required).
+4. **Reason**: Required field explaining why the entry is added.
+
+### 3.2. Managing blacklists
+
+The **Manage Blacklists** tab displays all active blacklist entries:
+
+* **Viewing**: See the blocked data, scope, product ID, and reason.
+* **Deleting**: Use the **Delete** button to remove an entry.
+
+## 4. Viewing license requests
+
+The **Requests** view provides analytics and history for all license validation attempts.
+
+### 4.1. Filtering and overview
+
+* **Filters**: Search term, Product, User, and Date Range.
+* **Status badges**:
+  * ✅ Successful (green)
+  * ❌ Invalid License
+  * 🚫 Spam / Rate Limited
+  * 🔴 Blocked (shows `BlockReason`)
+
+### 4.2. Viewing request details
+
+Clicking a request row opens a dialog with detailed request data:
+
+* **License/Product Details**: Masked License Key, Product Version.
+* **Device Identifiers**: IP, HWID, MAC Address.
+* **System Environment**: OS Name/Version/Architecture, Java Version.
+* **Result Data**: Request Date, Type, and Response Type.

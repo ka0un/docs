@@ -1,0 +1,75 @@
+---
+title: "Pterodactyl Setup"
+description: "Set up and run SunGuard on a Pterodactyl panel server."
+icon: "server"
+---
+
+<Note>
+Before you start, [get your license key](/license-key) from our Discord server.
+</Note>
+
+## Step 1: Download the egg and import it to Pterodactyl
+
+SunGuard uses the same egg as SunLicense: SunLicenseEggShell, a modified generic Java egg originally based on parkervcp's Generic Java Egg.
+
+<Card title="Download egg-generic-java.json" icon="download" href="/files/sunguard/egg-generic-java.json">
+  SunLicenseEggShell (Generic Java Egg)
+</Card>
+
+<Steps>
+  <Step title="Open the Admin Panel">
+    Go to your Pterodactyl Admin Panel.
+  </Step>
+  <Step title="Go to Nests">
+    Navigate to **Nests** under the Service Management section.
+  </Step>
+  <Step title="Import the egg">
+    Click the **Import Egg** button and upload the `egg-generic-java.json` file you downloaded.
+  </Step>
+</Steps>
+
+## Step 2: Create and start a server
+
+<Steps>
+  <Step title="Create the server">
+    Go to the **Servers** section in your Pterodactyl panel and click **Create Server**.
+  </Step>
+  <Step title="Configure resources">
+    * CPU Cores: 1 Core
+    * RAM: 1 GB
+    * Storage: 2 GB
+  </Step>
+  <Step title="Select the egg">
+    Select the egg you imported in Step 1.
+  </Step>
+  <Step title="Upload server.jar">
+    Upload `server.jar` to the new server via the **File** tab.
+  </Step>
+  <Step title="Add your license key">
+    Create a file named `license.txt` next to `server.jar`, paste your license key into it and save.
+  </Step>
+  <Step title="Start the server">
+    Start the server.
+  </Step>
+</Steps>
+
+<Info>
+On the first start, the SunGuard server automatically downloads the required dependencies. This can take several minutes and creates a `.m2` folder.
+</Info>
+
+## Step 3: Access the SunGuard dashboard
+
+<Steps>
+  <Step title="Visit your server address">
+    Open your browser and go to `http://{serverip}:{port}`, replacing `{serverip}` and `{port}` with your server's actual IP and port.
+  </Step>
+  <Step title="Log in">
+    * Username: `admin`
+    * Password: `admin`
+  </Step>
+  <Step title="Update your credentials">
+    After logging in, go to **Settings** and change the default credentials for better security.
+  </Step>
+</Steps>
+
+🎉 Congratulations! You have successfully set up the SunGuard server.

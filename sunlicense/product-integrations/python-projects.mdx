@@ -1,0 +1,145 @@
+---
+title: "Python Projects"
+description: "Integrate SunLicense into Python applications."
+icon: "python"
+---
+
+## Prerequisites
+
+* Python 3.6 or higher
+* `requests` library (`pip install requests`)
+* SunLicense API credentials
+
+## Integration steps
+
+### 1. Create a license validator class
+
+```python
+import requests
+from typing import Optional
+import platform
+
+class SunLicenseValidator:
+    def __init__(self, license_key: str, product_id: int, version: str = "1.0.0"):
+        self.license_key = license_key
+        self.product_id = product_id
+        self.version = version
+        self.api_url = "YOUR_API_URL/api/v1/validate"
+
+    def validate(self) -> bool:
+        data = {
+            "licenseKey": self.license_key,
+            "productId": self.product_id,
+            "productVersion": self.version,
+            "hwid": self.get_hwid(),  # Optional
+            "operatingSystem": platform.system(),
+            "operatingSystemVersion": platform.version()
+        }
+
+        try:
+            response = requests.post(
+                self.api_url,
+                json=data,
+                headers={"Content-Type": "application/json"}
+            )
+            response.raise_for_status()
+            return response.status_code == 200
+        except requests.exceptions.RequestException as e:
+            raise ValueError(f"License validation failed: {str(e)}")
+
+    @staticmethod
+    def get_hwid() -> str:
+        # Implement your HWID generation logic here
+        return "YOUR-HWID"
+```
+
+### 2. Basic implementation
+
+```python
+def main():
+    try:
+        validator = SunLicenseValidator(
+            license_key="YOUR-LICENSE-KEY",
+            product_id=YOUR_PRODUCT_ID,
+            version="1.0.0"
+        )
+
+        if validator.validate():
+            print("License is valid!")
+            # Continue with your application
+        else:
+            print("License validation failed!")
+            exit(1)
+    except Exception as e:
+        print(f"Error: {str(e)}")
+        exit(1)
+
+if __name__ == "__main__":
+    main()
+```
+
+### 3. Advanced implementation (decorators)
+
+```python
+from functools import wraps
+
+def requires_license(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        validator = SunLicenseValidator(
+            license_key="YOUR-LICENSE-KEY",
+            product_id=YOUR_PRODUCT_ID
+        )
+        
+        if validator.validate():
+            return func(*args, **kwargs)
+        else:
+            raise ValueError("Invalid license")
+    return wrapper
+
+# Usage example
+@requires_license
+def protected_function():
+    print("This function only runs with valid license")
+```
+
+## Best practices
+
+### Configuration management
+
+Use environment variables or configuration files, and store credentials securely:
+
+```python
+# config.py
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+LICENSE_KEY = os.getenv("LICENSE_KEY")
+PRODUCT_ID = int(os.getenv("PRODUCT_ID"))
+API_URL = os.getenv("LICENSE_API_URL")
+```
+
+### Error handling
+
+* Implement proper exception handling
+* Log validation failures
+* Degrade gracefully
+
+### Performance
+
+* Cache validation results
+* Implement retry mechanisms
+* Handle offline scenarios
+
+## Common issues
+
+1. **Network problems**
+   * Implement timeout handling
+   * Add retry logic
+   * Handle offline mode
+2. **Validation failures**
+   * Check the license key format
+   * Verify the product ID
+   * Monitor API responses

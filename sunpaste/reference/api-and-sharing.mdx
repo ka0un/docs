@@ -1,0 +1,66 @@
+---
+title: "API & Sharing Endpoints"
+sidebarTitle: "API & Sharing"
+description: "Share routes, REST API endpoints, authentication and rate limits."
+icon: "code"
+---
+
+## Browser and share endpoints
+
+| Route | Purpose | Notes |
+| --- | --- | --- |
+| `/view/{slug}` | Normal browser viewer | Recommended human-facing URL |
+| `/api/v1/paste/{slug}` | Viewer alias | Same UI as `/view/{slug}` |
+| `/api/v1/raw/{slug}` | Raw plain text | Accepts `?pwd=` for password-protected pastes |
+| `/api/v1/download/{slug}` | Download attachment | Accepts `?pwd=` for password-protected pastes |
+| `/api/v1/embed/{slug}` | HTML embed page | Not available for burn-after-read or password-protected pastes |
+| `/api/v1/embed/{slug}.js` | JavaScript widget | Same embed restrictions |
+| `/api/v1/qrcode/{slug}/{size}` | Inline QR image | `size` is `small`, `medium`, or `large` |
+| `/api/v1/qrcode/download/{slug}/{size}` | QR download | Same size values |
+| `/api/v1/export/{slug}` | File export | Used by the viewer's Download button |
+
+## REST API
+
+The JSON REST API is under `/api/v1/pastes`.
+
+| Method | Endpoint | Description |
+| --- | --- | --- |
+| `POST` | `/api/v1/pastes` | Create a paste |
+| `GET` | `/api/v1/pastes` | List the authenticated user's pastes |
+| `GET` | `/api/v1/pastes/{slug}` | Get one paste as JSON |
+| `PUT` | `/api/v1/pastes/{slug}` | Update a paste you own |
+| `DELETE` | `/api/v1/pastes/{slug}` | Delete a paste you own |
+| `GET` | `/api/v1/pastes/{slug}/raw` | Stream raw text |
+| `GET` | `/api/v1/pastes/{slug}/qrcode` | Download the medium QR code |
+
+<Note>
+* Anonymous API create requests are allowed only when playground private mode is off.
+* Anonymous `PRIVATE` create requests are downgraded to `UNLISTED`.
+* API responses use structured JSON errors.
+* API CORS is open to all origins.
+</Note>
+
+## Authentication
+
+The API accepts a logged-in browser session or an `X-API-Key` header. Generate keys on the [Integrations](/sunpaste/admin/integrations) page.
+
+```bash
+curl -H "X-API-Key: spk_your_key_here" http://localhost:8080/api/v1/pastes
+```
+
+## Rate limiting
+
+* Authenticated users: `60 requests/minute`
+* Anonymous users: `30 requests/minute`
+
+The remaining count is sent in the `X-RateLimit-Remaining` header.
+
+## Interactive API docs
+
+Every SunPaste instance serves its own API documentation:
+
+* `/api/docs` (redirects to `/swagger-ui/index.html`)
+* `/swagger-ui.html`
+* `/redoc.html`
+* `/v3/api-docs`
+* `/v3/api-docs.yaml`

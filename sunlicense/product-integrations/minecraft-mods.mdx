@@ -1,0 +1,101 @@
+---
+title: "Minecraft Mods"
+description: "Integrate SunLicense into Forge and Fabric mods."
+icon: "cubes"
+---
+
+## Prerequisites
+
+* Forge/Fabric mod development environment
+* Gradle
+* SunLicense API credentials
+
+## Integration steps
+
+### 1. Add the repository and dependency
+
+In your `build.gradle`:
+
+```gradle
+repositories {
+    maven {
+        url "https://repo.hapangama.com/releases"
+    }
+}
+
+dependencies {
+    implementation 'com.hapangama:SunLicenseAPI:1.0.3'
+}
+```
+
+### 2. Create a license manager
+
+```java
+public class ModLicenseManager {
+    private final SunLicenseAPI licenseApi;
+    private static final Logger LOGGER = LogManager.getLogger();
+
+    public ModLicenseManager() {
+        this.licenseApi = SunLicenseAPI.getLicense(
+            "YOUR-LICENSE-KEY",
+            YOUR_PRODUCT_ID,
+            "1.0.0",
+            "YOUR_API_URL"
+        );
+    }
+
+    public boolean validateLicense() {
+        try {
+            licenseApi.validate();
+            return true;
+        } catch (IOException e) {
+            LOGGER.error("License validation failed: " + e.getMessage());
+            return false;
+        }
+    }
+}
+```
+
+### 3. Implement it in your mod's main class
+
+```java
+public class YourMod {
+    private ModLicenseManager licenseManager;
+
+    public void onInitialize() { // For Fabric
+    // OR
+    public void init(FMLCommonSetupEvent event) { // For Forge
+        licenseManager = new ModLicenseManager();
+        
+        if (!licenseManager.validateLicense()) {
+            LOGGER.error("Invalid license - Mod will not function!");
+            // Disable mod functionality
+            return;
+        }
+        
+        // Continue with mod initialization
+    }
+}
+```
+
+## Best practices
+
+1. **Mod loading**
+   * Validate before initializing features
+   * Provide clear feedback to users
+   * Handle offline mode gracefully
+2. **Feature management**
+   * Graceful feature disabling
+   * Clear user communication
+   * Cache validation results
+
+## Common issues
+
+1. **Mod loading failures**
+   * Verify the license key
+   * Check network connectivity
+   * Confirm the dependency is included
+2. **Runtime problems**
+   * Monitor mod logs
+   * Check for network issues
+   * Verify license status

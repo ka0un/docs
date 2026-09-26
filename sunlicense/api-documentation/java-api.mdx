@@ -1,0 +1,124 @@
+---
+title: "Java API"
+description: "Integrate SunLicense into Java applications with SunLicenseAPI."
+icon: "java"
+---
+
+## Prerequisites
+
+* Java 8 or higher
+* SunLicense Server API URL
+* Product ID
+
+## Project setup
+
+### 1. Configure the Maven repository
+
+Add the Sundevs repository to your `pom.xml`:
+
+```xml
+<repositories>
+    <repository>
+        <id>sundevs</id>
+        <name>Sundevs Repository</name>
+        <url>https://repo.hapangama.com/releases</url>
+    </repository>
+</repositories>
+```
+
+### 2. Add the dependency
+
+```xml
+<dependencies>
+    <dependency>
+        <groupId>com.hapangama</groupId>
+        <artifactId>SunLicenseAPI</artifactId>
+        <version>1.0.3</version>
+    </dependency>
+</dependencies>
+```
+
+## Basic integration
+
+### 1. Initialize the API
+
+```java
+SunLicenseAPI api = SunLicenseAPI.getLicense(
+    "YOUR-LICENSE-KEY",    // License key
+    YOUR_PRODUCT_ID,       // Product ID (integer)
+    "YOUR_VERSION",        // Product version
+    "YOUR_API_URL"         // API endpoint
+);
+```
+
+<Warning>
+Don't hardcode the license key. It's different for every license, so **write logic to read the license key from a config file** and pass it as a parameter.
+</Warning>
+
+### 2. Implement license validation
+
+```java
+try {
+    api.validate();
+    System.out.println("License is valid");
+} catch (IOException e) {
+    System.out.println("License validation failed: " + e.getMessage());
+    System.exit(1);
+}
+```
+
+## Advanced configuration
+
+### Custom IP address
+
+```java
+// Option 1: Get public IP automatically
+HttpClient client = HttpClient.newHttpClient();
+HttpRequest request = HttpRequest.newBuilder()
+    .uri(URI.create("https://api.ipify.org"))
+    .GET()
+    .build();
+HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+String publicIP = response.body();
+api.setIp(publicIP);
+
+// Option 2: Set IP manually
+api.setIp("YOUR.IP.ADDRESS");
+```
+
+### Loading the license from a file
+
+For production environments, load the license key from a file:
+
+```java
+SunLicenseAPI api = SunLicenseAPI.getLicenseFromFile(
+    "path/to/license.txt",
+    YOUR_PRODUCT_ID,
+    "YOUR_VERSION",
+    "YOUR_API_URL"
+);
+```
+
+### Custom HWID
+
+You can write your own HWID implementation and pass it with the request:
+
+```java
+api.setHwid("YOUR-CUSTOM-HWID");
+```
+
+## Troubleshooting
+
+1. **Connection issues**
+   * Verify the API endpoint URL
+   * Check network connectivity
+   * Confirm firewall settings
+2. **Validation failures**
+   * Verify the license key format
+   * Check the product ID is correct
+   * Confirm IP address restrictions
+3. **Configuration problems**
+   * Ensure Java version compatibility
+   * Check dependency versions
+
+Remember to replace placeholder values (`YOUR-LICENSE-KEY`, `YOUR_PRODUCT_ID`, `YOUR_API_URL`) with your actual values.

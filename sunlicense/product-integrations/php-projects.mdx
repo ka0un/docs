@@ -1,0 +1,147 @@
+---
+title: "PHP Projects"
+description: "Integrate SunLicense into PHP applications."
+icon: "php"
+---
+
+## Prerequisites
+
+* PHP 7.4 or higher
+* Composer (optional)
+* cURL extension enabled
+* SunLicense API credentials
+
+## Integration steps
+
+### 1. Create a license validator class
+
+```php
+<?php
+
+class SunLicenseValidator {
+    private string $licenseKey;
+    private int $productId;
+    private string $apiUrl;
+    private string $version;
+
+    public function __construct(string $licenseKey, int $productId, string $version = '1.0.0') {
+        $this->licenseKey = $licenseKey;
+        $this->productId = $productId;
+        $this->version = $version;
+        $this->apiUrl = 'YOUR_API_URL/api/v1/validate';
+    }
+
+    public function validate(): bool {
+        $data = [
+            'licenseKey' => $this->licenseKey,
+            'productId' => $this->productId,
+            'productVersion' => $this->version,
+            'hwid' => $this->getHWID() // Optional
+        ];
+
+        $ch = curl_init($this->apiUrl);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Content-Type: application/json'
+        ]);
+
+        $response = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        if ($httpCode !== 200) {
+            throw new Exception('License validation failed: ' . $response);
+        }
+
+        return true;
+    }
+
+    private function getHWID(): string {
+        // Implement your HWID generation logic here
+        return 'YOUR-HWID';
+    }
+}
+```
+
+### 2. Implementation example
+
+```php
+<?php
+
+require_once 'SunLicenseValidator.php';
+
+try {
+    $validator = new SunLicenseValidator(
+        'YOUR-LICENSE-KEY',
+        YOUR_PRODUCT_ID,
+        '1.0.0'
+    );
+
+    if ($validator->validate()) {
+        echo "License is valid!";
+        // Continue with your application logic
+    }
+} catch (Exception $e) {
+    die("License validation failed: " . $e->getMessage());
+}
+```
+
+### 3. Using a framework (Laravel example)
+
+```php
+<?php
+
+namespace App\Services;
+
+use Illuminate\Support\Facades\Cache;
+
+class LicenseService
+{
+    private $validator;
+
+    public function __construct()
+    {
+        $this->validator = new SunLicenseValidator(
+            config('license.key'),
+            config('license.product_id'),
+            config('license.version')
+        );
+    }
+
+    public function validateLicense()
+    {
+        // Cache result for 24 hours
+        return Cache::remember('license_status', 86400, function () {
+            return $this->validator->validate();
+        });
+    }
+}
+```
+
+## Best practices
+
+1. **Error handling**
+   * Implement proper try-catch blocks
+   * Log validation failures
+   * Handle errors gracefully
+2. **Caching**
+   * Cache validation results
+   * Implement proper cache invalidation
+   * Handle offline scenarios
+3. **Security**
+   * Store the license key in environment variables
+   * Implement proper error logging
+   * Secure API communication
+
+## Common issues and solutions
+
+1. **cURL errors**
+   * Verify the cURL installation
+   * Check SSL certificates
+   * Confirm the API endpoint is accessible
+2. **Validation failures**
+   * Check license key validity
+   * Verify the product ID
+   * Monitor API response codes

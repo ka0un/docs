@@ -1,0 +1,69 @@
+---
+title: "Core Concepts"
+description: "Users, visibility, passwords, burn after read, expiration, private mode and size limits."
+icon: "lightbulb"
+---
+
+## Anonymous, authenticated, and admin users
+
+* Anonymous users can open the home page and create normal shared pastes when private mode is off.
+* Authenticated users can sign in and access their own protected/private content.
+* Admin users can manage the instance and access all protected admin pages by default.
+
+There is no self-service registration page. User accounts are created from the admin [User Management](/sunpaste/admin/user-management) page.
+
+## Visibility
+
+SunPaste uses three visibility levels:
+
+* `PUBLIC`: intended for normal sharing
+* `UNLISTED`: intended for direct-link sharing only
+* `PRIVATE`: only the owner or an admin can open it
+
+<Note>
+* In the current UI, both `PUBLIC` and `UNLISTED` are opened by direct link.
+* SunPaste does not expose a public feed or public search page.
+* Anonymous users cannot truly create `PRIVATE` pastes. If they choose Private, the UI falls back to Unlisted and the API also downgrades anonymous private requests to Unlisted.
+</Note>
+
+## Password protection
+
+* A password-protected paste shows a password form before content is revealed.
+* The password is stored hashed with BCrypt.
+* On the browser home page, the password must be at least 6 characters and include both letters and numbers.
+
+## Burn after read
+
+* A burn-after-read paste shows a warning screen before the content is revealed.
+* After the first successful view, the paste is permanently deleted.
+* Its QR code files are also deleted when the paste is burned.
+
+## Expiration
+
+* A paste can expire at a future date/time.
+* Expired pastes are marked as expired and stop being accessible.
+* Expired pastes are not immediately deleted; they are flagged as expired.
+
+## Playground private mode
+
+An admin can enable "private mode" from [Settings](/sunpaste/admin/settings). When this is on:
+
+* Anonymous users cannot save or share from the home page
+* Public and unlisted browser view links require login
+* Raw endpoints and API-style shared access also require login
+
+This is stricter than a raw-download-only privacy mode. It affects the normal viewer page too.
+
+## Size limits
+
+Defaults:
+
+* Anonymous users: `5 MB`
+* Authenticated users: `10 MB`
+
+Admins can raise those limits up to:
+
+* Anonymous users: `15 MB`
+* Authenticated users: `30 MB`
+
+Large pastes above the filesystem threshold are stored on disk instead of inline in the database.

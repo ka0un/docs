@@ -1,0 +1,180 @@
+---
+title: "FiveM Projects"
+description: "Implement SunLicense license management in a FiveM resource."
+icon: "car"
+---
+
+## Prerequisites
+
+* A FiveM server
+* SunLicense API credentials
+* Your product ID and license key
+
+## Step 1: Set up the basic structure
+
+Create a new file called `license_check.lua` in your resource's server folder:
+
+```lua
+-- license_check.lua
+local SunLicenseValidator = {}
+SunLicenseValidator.__index = SunLicenseValidator
+
+-- Configuration
+local CONFIG = {
+    API_URL = "http://localhost:8080/api/v1/validate",
+    LICENSE_KEY = GetConvar("sunlicense_key", "YOUR-LICENSE-KEY"),
+    PRODUCT_ID = 602,  -- Replace with your product ID
+    VERSION = "1.0.0"
+}
+```
+
+## Step 2: Implement the validator class
+
+```lua
+function SunLicenseValidator.new()
+    local self = setmetatable({}, SunLicenseValidator)
+    self.authenticated = false
+    return self
+end
+
+function SunLicenseValidator:validate()
+    -- Construct the payload according to SunLicense specifications
+    local payload = json.encode({
+        licenseKey = CONFIG.LICENSE_KEY,
+        productId = CONFIG.PRODUCT_ID,
+        productVersion = CONFIG.VERSION,
+        hwid = self:getHWID(),
+        macAddress = "",  -- Optional field
+        operatingSystem = "",  -- Optional field
+        operatingSystemVersion = "",  -- Optional field
+        operatingSystemArchitecture = "",  -- Optional field
+        javaVersion = ""  -- Optional field
+    })
+
+    PerformHttpRequest(CONFIG.API_URL, function(errorCode, resultData, headers)
+        if errorCode == 200 then
+            local success, data = pcall(json.decode, resultData)
+            if success and data then
+                if data.status == "valid" then
+                    self.authenticated = true
+                    print("^2[SunLicense] License validated successfully^0")
+                else
+                    print("^1[SunLicense] License validation failed^0")
+                    Wait(5000)
+                    os.exit()
+                end
+            end
+        else
+            print("^1[SunLicense] Failed to connect to license server^0")
+            Wait(5000)
+            os.exit()
+        end
+    end, 'POST', payload, {
+        ['Content-Type'] = 'application/json',
+        ['Content-Length'] = #payload
+    })
+end
+
+-- Generate a unique hardware identifier
+function SunLicenseValidator:getHWID()
+    -- You can implement your own HWID generation logic here
+    -- This is a simple example that combines server information
+    local serverID = GetConvar("sv_licenseIdentifier", "")
+    local port = GetConvar("endpoint_port", "")
+    return string.format("fivem-server-%s-%s", serverID, port)
+end
+```
+
+## Step 3: Initialize the license check
+
+Create an initialization file (`init.lua`):
+
+```lua
+-- init.lua
+local validator = SunLicenseValidator.new()
+
+AddEventHandler('onResourceStart', function(resourceName)
+    if GetCurrentResourceName() ~= resourceName then return end
+    
+    Wait(1000) -- Wait for server to fully initialize
+    validator:validateWithRetry(3)
+end)
+```
+
+## Step 4: Configure your resource
+
+Update your `fxmanifest.lua`:
+
+```lua
+fx_version 'cerulean'
+game 'gta5'
+
+author 'Your Name'
+description 'Your Resource Description'
+version '1.0.0'
+
+server_scripts {
+    'server/license_check.lua',
+    'server/init.lua',
+    -- Your other server scripts
+}
+
+-- Add your convar for the license key
+convar_category 'Licensing' {
+    "License Configuration",
+    {
+        { "License Key", "sunlicense_key", "CV_STRING", "Your SunLicense key" }
+    }
+}
+```
+
+## Best practices
+
+1. **License key security**
+   * Store your license key in `server.cfg`
+   * Never expose the key in client-side code
+   * Rotate keys regularly if possible
+2. **Error handling**
+   * Implement proper logging
+   * Handle network timeouts
+   * Provide clear error messages
+3. **Validation timing**
+   * Validate on resource start
+   * Implement periodic validation if needed
+   * Use reasonable retry intervals
+
+## Common issues and solutions
+
+### Network connectivity problems
+
+```lua
+-- Add this to your validation function
+if not self:checkConnection() then
+    print("^1[SunLicense] No network connection available^0")
+    Wait(10000)
+    return false
+end
+```
+
+### Invalid license format
+
+```lua
+-- Add this validation check
+function SunLicenseValidator:isValidLicenseFormat(key)
+    -- Check for the format: XXXX-XXXX-XXXX-XXXX-XXXX
+    return type(key) == "string" and key:match("^%w%w%w%w%-%w%w%w%w%-%w%w%w%w%-%w%w%w%w%-%w%w%w%w$") ~= nil
+end
+```
+
+### Failed validation response
+
+```lua
+-- Add this helper function
+function SunLicenseValidator:handleValidationError(response)
+    if response.error then
+        print(string.format("^1[SunLicense] Validation error: %s^0", response.error))
+        return false
+    end
+    return true
+end
+```

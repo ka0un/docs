@@ -1,0 +1,52 @@
+---
+title: "Creating Links"
+description: "Create short links with Quick Create or the full form."
+icon: "plus"
+---
+
+SunLinks offers two ways to create a short link.
+
+## Quick Create
+
+The fastest way to create a link:
+
+1. **Copy a URL** to your clipboard (for example from your browser address bar).
+2. From anywhere on the Dashboard, **press Enter** or **click the Quick Create panel**.
+3. A dialog opens with your clipboard URL pre-filled. If clipboard access is restricted, paste or type the URL manually.
+4. Optionally expand **More options** to set:
+   * **Custom short code**: your own memorable path (for example `my-link`)
+   * **Title**: a friendly name for the link
+   * **Description**: a brief note about what the link is for
+   * **Redirect type**: 301 (Permanent) or 302 (Temporary)
+5. Click **Create** (or press Enter). A confirmation dialog shows your new short URL, a QR code, and a **Copy** button.
+
+## Full create form
+
+For more control, go to **Links → Create New Link**.
+
+| Field | Required | Description |
+| --- | --- | --- |
+| Destination URL | ✅ | The full URL you want to shorten (must start with `http://` or `https://`) |
+| Custom Short Code | No | Your preferred short path; leave blank for auto-generated |
+| Title | No | A human-friendly label for the link |
+| Description | No | A brief description (up to 500 characters) |
+| Redirect Type | No | `302 - Temporary` (default) or `301 - Permanent` |
+
+After creation, a confirmation dialog shows your new short URL, QR code, and options to **Copy**, **Share**, or **Edit** the link.
+
+## Custom short codes
+
+SunLinks checks custom short codes for availability in real time. If a code is taken, you'll see an error and must choose another. Short codes:
+
+* Must be 3–50 characters long
+* Can contain letters, numbers, hyphens (`-`), and underscores (`_`)
+* Are unique across the entire system
+
+If you leave the short code blank, a random 6-character code is generated.
+
+## Redirect types
+
+| Type | Behavior |
+| --- | --- |
+| **302: Temporary** | Browsers and search engines treat the redirect as temporary. Best for most use cases (marketing campaigns, A/B testing). This is the default. |
+| **301: Permanent** | Browsers and search engines cache the redirect. Best for permanent URL migrations. |

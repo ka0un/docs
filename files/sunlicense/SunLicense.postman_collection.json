@@ -1,0 +1,31 @@
+{
+	"info": {
+		"_postman_id": "32a6ac31-59d6-40be-9cf8-0d9633cdbb68",
+		"name": "SunLicense",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "36340770"
+	},
+	"item": [
+		{
+			"name": "License Validation Request V1",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"licenseKey\": \"AOJB-IQIP-03U2-NGQO-UMJR\",\r\n    \"productId\": 1,\r\n    \"productVersion\": \"1.0.0\",\r\n    \"hwid\": \"unique-hardware-id7\",\r\n    \"macAddress\": \"00:1A:2B:3C:4D:5E\",\r\n    \"operatingSystem\": \"Windows\",\r\n    \"operatingSystemVersion\": \"10\",\r\n    \"operatingSystemArchitecture\": \"x64\",\r\n    \"javaVersion\": \"17\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://36.151.65.41:8081/api/v1/validate"
+			},
+			"response": []
+		}
+	]
+}

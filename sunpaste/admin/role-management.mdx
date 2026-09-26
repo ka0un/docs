@@ -1,0 +1,35 @@
+---
+title: "Role Management"
+description: "Create roles and assign permissions."
+icon: "user-shield"
+---
+
+Role management lives at `/admin/roles`. The grid shows ID, Role Name, Permissions and Actions.
+
+## Add a role
+
+Set the role name and select permissions from the permission list.
+
+## Edit a role
+
+Change the role name and assigned permissions.
+
+## Delete a role
+
+Roles can be deleted after confirmation.
+
+## Protected admin role
+
+The built-in `ROLE_ADMIN` role cannot be edited or deleted, and is kept synchronized with all permissions.
+
+## Permissions
+
+| Permission | Area |
+| --- | --- |
+| `READ_USER`, `CREATE_USER`, `EDIT_USER`, `DELETE_USER` | Users |
+| `READ_ROLE`, `CREATE_ROLE`, `EDIT_ROLE`, `DELETE_ROLE` | Roles |
+| `MANAGE_PERMISSIONS` | Permissions |
+| `MANAGE_SETTINGS` | Settings |
+| `MANAGE_DISCORD` | Discord integration |
+| `MANAGE_NOTIFICATIONS` | Notifications |
+| `ALL` | Everything |

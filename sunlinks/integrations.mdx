@@ -1,0 +1,55 @@
+---
+title: "Integrations"
+description: "REST API tokens and Discord integration."
+icon: "plug"
+---
+
+The Integrations page (admins only) provides connections to external services.
+
+## Developer API
+
+SunLinks includes a full REST API for programmatic access to your links: automate link creation, fetch analytics, or integrate SunLinks into your own workflows.
+
+### Create an API token
+
+1. Go to **Integrations → Developer API**.
+2. Enter a **Name** for your token (for example "CI/CD Pipeline").
+3. Select one or more **Intents**:
+   * **READ**: list and view links and analytics
+   * **WRITE**: create new links
+   * **UPDATE**: modify existing links
+   * **DELETE**: remove links
+   * **ALL**: full access (overrides all other intents)
+4. Click **Create API Token**, then copy the token and store it securely.
+
+To update or delete a token, select it in the table and use the form or the **Delete Token** button.
+
+### API documentation
+
+SunLinks ships interactive Swagger/OpenAPI documentation. Click **Read API Documentation** in the Developer API tab, or visit `/swagger-ui.html` on your instance.
+
+Every request must include your token in the `X-API-Key` header.
+
+| Method | Endpoint | Description |
+| --- | --- | --- |
+| `POST` | `/api/v1/links` | Create a new link |
+| `GET` | `/api/v1/links` | List your links (paginated) |
+| `GET` | `/api/v1/links/{shortCode}` | Get link details |
+| `PUT` | `/api/v1/links/{shortCode}` | Update a link |
+| `DELETE` | `/api/v1/links/{shortCode}` | Delete a link |
+| `GET` | `/api/v1/links/{shortCode}/analytics` | Get link analytics |
+| `GET` | `/api/v1/links/{shortCode}/qrcode` | Download QR code as PNG |
+
+## Discord integration
+
+Admins can connect a Discord bot for notifications and alerts:
+
+1. Go to **Integrations → Discord**.
+2. Enter your **Discord Bot Token**. See [Create a Discord bot token](/guides/discord-bot-token).
+3. Enter your **Discord User ID**.
+4. Optionally configure alert channels for commands, license requests, and notifications.
+5. Click **Save Discord Settings**, then **Start Discord Bot**.
+
+You can also customize bot notification messages with the **Discord Embed Editor**: set custom titles, descriptions, colors, footers, and images.
+
+See [Discord Bot](/sunlinks/discord-bot) for the slash commands.

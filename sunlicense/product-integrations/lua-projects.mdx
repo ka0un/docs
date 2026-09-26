@@ -1,0 +1,151 @@
+---
+title: "Lua Projects"
+description: "Integrate SunLicense into Lua applications and LOVE2D games."
+icon: "moon"
+---
+
+## Prerequisites
+
+* Lua 5.1 or higher
+* LuaSocket library
+* JSON library (dkjson or similar)
+* SunLicense API credentials
+
+## Integration steps
+
+### 1. Create a license validator
+
+```lua
+local socket = require("socket")
+local http = require("socket.http")
+local ltn12 = require("ltn12")
+local json = require("dkjson")
+
+local SunLicenseValidator = {}
+SunLicenseValidator.__index = SunLicenseValidator
+
+function SunLicenseValidator.new(licenseKey, productId, version)
+    local self = setmetatable({}, SunLicenseValidator)
+    self.licenseKey = licenseKey
+    self.productId = productId
+    self.version = version or "1.0.0"
+    self.apiUrl = "YOUR_API_URL/api/v1/validate"
+    return self
+end
+
+function SunLicenseValidator:validate()
+    local payload = {
+        licenseKey = self.licenseKey,
+        productId = self.productId,
+        productVersion = self.version,
+        hwid = self:getHWID() -- Optional
+    }
+
+    local jsonPayload = json.encode(payload)
+    local response = {}
+
+    local _, code = http.request{
+        url = self.apiUrl,
+        method = "POST",
+        headers = {
+            ["Content-Type"] = "application/json",
+            ["Content-Length"] = #jsonPayload
+        },
+        source = ltn12.source.string(jsonPayload),
+        sink = ltn12.sink.table(response)
+    }
+
+    if code ~= 200 then
+        error("License validation failed with code: " .. tostring(code))
+    end
+
+    return true
+end
+
+function SunLicenseValidator:getHWID()
+    -- Implement your HWID generation logic here
+    return "YOUR-HWID"
+end
+```
+
+### 2. Basic implementation
+
+```lua
+local function main()
+    local validator = SunLicenseValidator.new(
+        "YOUR-LICENSE-KEY",
+        YOUR_PRODUCT_ID,
+        "1.0.0"
+    )
+
+    local success, err = pcall(function()
+        return validator:validate()
+    end)
+
+    if success then
+        print("License is valid!")
+        -- Continue with your application
+    else
+        print("License validation failed: " .. tostring(err))
+        os.exit(1)
+    end
+end
+
+main()
+```
+
+### 3. LOVE2D integration
+
+```lua
+function love.load()
+    validator = SunLicenseValidator.new(
+        "YOUR-LICENSE-KEY",
+        YOUR_PRODUCT_ID
+    )
+    
+    success, err = pcall(function()
+        return validator:validate()
+    end)
+    
+    if not success then
+        error_message = err
+        love.event.quit()
+    end
+end
+
+function love.draw()
+    if error_message then
+        love.graphics.print("License Error: " .. error_message, 10, 10)
+    end
+end
+```
+
+## Best practices
+
+1. **Error handling**
+   * Use `pcall` for error handling
+   * Implement proper logging
+   * Handle network timeouts
+2. **Security**
+   * Store the license key securely
+   * Use HTTPS communication
+   * Handle sensitive data carefully
+3. **Performance**
+   * Cache validation results
+   * Implement retry logic
+   * Handle offline scenarios
+
+## Common issues
+
+1. **Network problems**
+   * Implement timeout handling
+   * Add retry logic
+   * Handle connection errors
+2. **SSL/HTTPS issues**
+   * Configure proper SSL certificates
+   * Handle HTTPS requirements
+   * Verify API endpoint security
+3. **JSON parsing**
+   * Handle malformed responses
+   * Validate the response format
+   * Proper error handling

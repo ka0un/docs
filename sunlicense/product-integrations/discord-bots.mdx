@@ -1,0 +1,110 @@
+---
+title: "Discord Bots"
+description: "Integrate SunLicense into Discord.js bots."
+icon: "discord"
+---
+
+## Prerequisites
+
+* Node.js environment (for Discord.js)
+* Your Discord bot project
+* SunLicense API credentials
+
+## Integration steps
+
+### 1. Install required packages
+
+```bash
+npm install axios
+```
+
+### 2. Create a license validator
+
+```javascript
+const axios = require('axios');
+
+class LicenseValidator {
+    constructor(licenseKey, productId) {
+        this.licenseKey = licenseKey;
+        this.productId = productId;
+        this.apiUrl = 'YOUR_API_URL/api/v1/validate';
+    }
+
+    async validateLicense() {
+        try {
+            const response = await axios.post(this.apiUrl, {
+                licenseKey: this.licenseKey,
+                productId: this.productId,
+                hwid: 'YOUR-HWID', // Optional
+                productVersion: '1.0.0'
+            });
+
+            return response.status === 200;
+        } catch (error) {
+            console.error('License validation failed:', error.message);
+            return false;
+        }
+    }
+}
+```
+
+### 3. Implement it in your bot
+
+```javascript
+const { Client, GatewayIntentBits } = require('discord.js');
+const LicenseValidator = require('./LicenseValidator');
+
+const client = new Client({ 
+    intents: [GatewayIntentBits.Guilds] 
+});
+
+const licenseValidator = new LicenseValidator('YOUR-LICENSE-KEY', YOUR_PRODUCT_ID);
+
+client.once('ready', async () => {
+    const isValid = await licenseValidator.validateLicense();
+    if (!isValid) {
+        console.error('Invalid license - Bot shutting down');
+        client.destroy();
+        process.exit(1);
+    }
+    console.log('Bot is ready!');
+});
+
+// Add periodic validation
+setInterval(async () => {
+    const isValid = await licenseValidator.validateLicense();
+    if (!isValid) {
+        console.error('License validation failed - Bot shutting down');
+        client.destroy();
+        process.exit(1);
+    }
+}, 24 * 60 * 60 * 1000); // Check every 24 hours
+
+client.login('YOUR_BOT_TOKEN');
+```
+
+## Best practices
+
+1. **Startup validation**
+   * Validate before bot initialization
+   * Implement graceful shutdown
+   * Clear error logging
+2. **Periodic validation**
+   * Regular license checks
+   * Handle network issues
+   * Graceful error handling
+3. **Security**
+   * Store the license key securely
+   * Use environment variables
+   * Proper error handling
+
+## Common issues
+
+1. **Validation failures**
+   * Check license key validity
+   * Verify network connectivity
+   * Confirm the product ID
+2. **Runtime issues**
+   * Monitor bot logs
+   * Check for API rate limits
+   * Verify license status

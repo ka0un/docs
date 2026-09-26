@@ -1,0 +1,46 @@
+---
+title: "Run from Source"
+description: "Run SunPaste locally with the Maven wrapper."
+icon: "code"
+---
+
+SunPaste targets Java `21`. The easiest way to run it from the repository is with the included Maven wrapper.
+
+<Tabs>
+  <Tab title="Windows">
+    ```powershell
+    .\mvnw.cmd spring-boot:run
+    ```
+  </Tab>
+  <Tab title="macOS / Linux">
+    ```bash
+    ./mvnw spring-boot:run
+    ```
+  </Tab>
+</Tabs>
+
+Then open `http://localhost:8080/`.
+
+<Note>
+The first start may take longer while Vaadin prepares and builds frontend assets.
+</Note>
+
+## First-run checklist
+
+After the app starts:
+
+1. Open `/login`.
+2. Sign in with `admin` / `admin`.
+3. Go to `/settings`.
+4. Change the admin username and password.
+5. Set your preferred site name, theme, storage path, and privacy rules.
+6. Optionally create `ROLE_USER`, other roles, and user accounts from the admin pages.
+
+## Local runtime defaults
+
+* Port: `8080` unless `SERVER_PORT` is set
+* H2 database file: `./data/suncore`
+* Paste overflow files: `./data/pastes`
+* QR codes: `./data/qrcodes`
+* Log file: `./data/logs/sunpaste.log`
+* H2 console: `/h2-console`

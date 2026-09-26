@@ -1,0 +1,65 @@
+---
+title: "SunPaste"
+sidebarTitle: "Overview"
+description: "Self-hosted paste sharing for code, text, and developer notes."
+icon: "paste"
+---
+
+<Frame>
+  <img src="/images/sunpaste/019dd89e561373ad-image.png" alt="SunPaste" />
+</Frame>
+
+SunPaste is a self-hosted paste-sharing application for code, text, and developer notes. This guide explains the real pages, controls, routes, and behaviors that exist in SunPaste.
+
+This guide is for:
+
+* people creating and sharing pastes
+* logged-in users working with protected or private content
+* admins operating a SunPaste instance
+* developers using the REST API and API keys
+
+<CardGroup cols={2}>
+  <Card title="Buy SunPaste" icon="cart-shopping" href="/where-to-buy">
+    Available on BuiltByBit and the Sundevs Store.
+  </Card>
+  <Card title="Managed Hosting" icon="server" href="https://store.sundevs.net/l/sunpaste-mh">
+    Let us host SunPaste for you.
+  </Card>
+</CardGroup>
+
+## What SunPaste does
+
+SunPaste lets you:
+
+* Create a paste in the browser
+* Choose whether it is public, unlisted, or private
+* Add an optional custom URL slug
+* Add an optional expiration time
+* Protect a paste with a password
+* Make a paste self-destruct after the first successful view
+* Share a normal view link, raw text link, QR code, or embed snippet
+* Manage the instance through the dashboard, settings, integrations, user management, and role management pages
+* Automate paste creation and retrieval through the REST API and API keys
+
+## Route map
+
+| Page | Route | Who can use it | Purpose |
+| --- | --- | --- | --- |
+| Home / Playground | `/` | Everyone | Create a new paste |
+| Paste Viewer | `/view/{slug}` | Depends on paste settings | View a saved paste in the browser |
+| Paste Viewer Alias | `/api/v1/paste/{slug}` | Depends on paste settings | Same viewer page under an API-style route |
+| Login | `/login` | Everyone | Sign in to SunPaste |
+| Dashboard | `/dashboard` | Logged-in users | Overview page after login |
+| Settings | `/settings` | Admin or any account with `ALL` permission | Manage system settings |
+| Integrations | `/Integrations` | Admin or any account with `ALL` permission | Configure Discord and API keys |
+| User Management | `/admin/users` | Admin or any account with `ALL` permission | Create, edit, disable, and delete users |
+| Role Management | `/admin/roles` | Admin or any account with `ALL` permission | Create, edit, and delete roles |
+| Swagger UI | `/swagger-ui.html` | Everyone | Interactive REST API docs |
+| ReDoc | `/redoc.html` | Everyone | Read-only API docs |
+| OpenAPI JSON | `/v3/api-docs` | Everyone | Machine-readable API specification |
+
+<Note>
+* Singular `paste` means the browser viewer page: `/api/v1/paste/{slug}`
+* Plural `pastes` means the JSON API: `/api/v1/pastes/{slug}`
+* The Integrations page uses a capital `I`: `/Integrations`
+</Note>

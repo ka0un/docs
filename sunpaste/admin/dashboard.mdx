@@ -1,0 +1,37 @@
+---
+title: "Dashboard"
+description: "Overview page with system health, navigation tiles and paste statistics."
+icon: "gauge"
+---
+
+The dashboard lives at `/dashboard`. Any logged-in user can access it; it is not limited to admins.
+
+## What the page shows
+
+* An info banner
+* Navigation tiles
+* Paste statistics charts
+* Optional advertisement banners, if configured by the ad service
+
+## Info banner
+
+The info banner shows:
+
+* The configured admin username
+* Live UTC time, updated every second
+* A system health indicator
+
+The health indicator is updated through browser polling:
+
+* Green: operational
+* Yellow: unhealthy
+* Red: offline
+
+## Navigation tiles
+
+The dashboard tiles are `Integrations`, `Playground`, `Users` and `Settings`. The `Playground` tile sends you back to `/`.
+
+## Charts
+
+* **Paste Visibility**: Public vs Unlisted vs Private counts
+* **Access Pattern Summary**: counts for one-time, password-protected, public, and unlisted pastes

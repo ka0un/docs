@@ -1,0 +1,149 @@
+---
+title: "VPS Setup"
+description: "Set up SunBot on a VPS without Pterodactyl."
+icon: "terminal"
+---
+
+## Prerequisites
+
+* **Java 21+ installed**
+* **A valid SunBot license key**. See [Get your license key](/license-key).
+
+## 1. Upload required files
+
+Transfer the following files to your VPS:
+
+* `server.jar` (SunBot server file)
+* `license.txt` (contains your license key)
+
+You can use `scp` or an FTP client like FileZilla. Example using `scp`:
+
+```sh
+scp server.jar license.txt user@your-vps-ip:/home/user/
+```
+
+## 2. Start the SunBot server
+
+Navigate to the directory containing `server.jar` and `license.txt`, then run:
+
+```sh
+SERVER_PORT=25595 java -Dterminal.jline=false -Dterminal.ansi=true -jar server.jar
+```
+
+* Replace `25595` with the desired port number.
+* Make sure the port is open in your firewall settings.
+
+If Java 21+ is not installed, you can install it with:
+
+```sh
+sudo apt update
+sudo apt install openjdk-21-jdk -y
+```
+
+## 3. Verify local access
+
+Once the server starts, check it from the VPS itself:
+
+```sh
+curl http://localhost:25595
+```
+
+## 4. Expose to the internet (optional)
+
+To access SunBot from an external network, configure a reverse proxy with Nginx.
+
+**Install Nginx**
+
+```sh
+sudo apt install nginx -y
+```
+
+**Configure the Nginx proxy**
+
+```sh
+sudo nano /etc/nginx/sites-available/sunbot
+```
+
+Add the following content:
+
+```nginx
+server {
+    listen 80;
+    server_name yourdomain.com;
+
+    location / {
+        proxy_pass http://localhost:25595;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+}
+```
+
+Save and exit (`CTRL + X`, then `Y`, then `Enter`).
+
+**Enable the configuration and restart Nginx**
+
+```sh
+sudo ln -s /etc/nginx/sites-available/sunbot /etc/nginx/sites-enabled/
+sudo systemctl restart nginx
+```
+
+SunBot is now available at `http://yourdomain.com`.
+
+## 5. Run on port 80 (alternative)
+
+If you don't want to use Nginx, run SunBot directly on port 80:
+
+```sh
+SERVER_PORT=80 java -Dterminal.jline=false -Dterminal.ansi=true -jar server.jar
+```
+
+<Note>
+This works only if no other services (like Nginx or Apache) are using port 80.
+</Note>
+
+## 6. Configure the firewall (if required)
+
+```sh
+sudo ufw allow 80/tcp
+sudo ufw allow 25595/tcp
+sudo ufw reload
+```
+
+## 7. Keep SunBot running
+
+To keep SunBot running after you close the terminal, use `screen` or `tmux`:
+
+<Tabs>
+  <Tab title="screen">
+    ```sh
+    sudo apt install screen -y
+    screen -S sunbot
+    SERVER_PORT=25595 java -Dterminal.jline=false -Dterminal.ansi=true -jar server.jar
+    ```
+
+    Press `CTRL + A`, then `D` to detach. To resume:
+
+    ```sh
+    screen -r sunbot
+    ```
+  </Tab>
+  <Tab title="tmux">
+    ```sh
+    sudo apt install tmux -y
+    tmux new -s sunbot
+    SERVER_PORT=25595 java -Dterminal.jline=false -Dterminal.ansi=true -jar server.jar
+    ```
+
+    Detach with `CTRL + B`, then `D`. Resume with:
+
+    ```sh
+    tmux attach -t sunbot
+    ```
+  </Tab>
+</Tabs>
+
+## Conclusion
+
+SunBot is now set up on your VPS. You can manage it manually or configure a systemd service for automatic startup. If you'd prefer a managed setup, consider [SunBot Managed Hosting](https://go.sundevs.net/sb-mh).

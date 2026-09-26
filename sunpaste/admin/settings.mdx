@@ -1,0 +1,99 @@
+---
+title: "Settings"
+description: "Admin credentials, storage, backups, theme and playground privacy."
+icon: "gear"
+---
+
+The Settings page lives at `/settings`. By default, only the admin account can access it. Any other user needs the `ALL` permission.
+
+The page has these tabs: `Admin`, `Storage`, `Backup & Restore`, `Theme`, `Integrations`, `Playground`.
+
+## Admin
+
+Change the admin username and password. When you save, the new value is stored in the settings table, and the admin login immediately starts using the updated credentials.
+
+<Note>
+* The UI warns that password changes may require a restart, depending on your deployment.
+* This admin account is settings-based, not a normal database-backed user.
+</Note>
+
+## Storage
+
+Controls:
+
+| Setting | Default | Maximum |
+| --- | --- | --- |
+| Anonymous paste size limit | `5 MB` | `15 MB` |
+| Authenticated user paste size limit | `10 MB` | `30 MB` |
+| Filesystem overflow threshold | `1 MB` | — |
+| Filesystem storage path | `./data/pastes` | — |
+
+When content exceeds the overflow threshold, the paste metadata stays in the database and the content is written to a text file in the configured storage path.
+
+## Backup & Restore
+
+### Personal content backup
+
+`Download All My Pastes (.zip)` downloads a ZIP of your own pastes only, including `pastes.json` and per-paste content files under `contents/`. You must be logged in.
+
+### Import pastes
+
+Upload one `pastes.json` file. During import:
+
+* SunPaste parses the JSON and inserts each paste
+* If a slug already exists, a new unique slug is generated
+* The result reports imported items, conflicts, and errors
+
+<Note>
+Imported records keep the `ownerUsername` stored in the JSON. They are not reassigned to the user who performs the import.
+</Note>
+
+### Admin: system-wide backup
+
+`Full JSON Dump` and `Full ZIP Backup` export every paste in the instance, including private content.
+
+<Warning>
+System-wide backups include private content. Use them carefully.
+</Warning>
+
+## Theme
+
+Controls the app appearance:
+
+* Light/dark theme switch
+* Site name
+* Primary, accent, background, body text, primary text, secondary text, error and success colors
+* `Reset to Defaults`
+
+Most changes apply immediately and are saved to settings.
+
+<Note>
+`Reset to Defaults` restores the site name to `SunCore` (not `SunPaste`) and deletes custom color settings so the built-in defaults are used again.
+</Note>
+
+## Integrations
+
+This tab is a shortcut to the [`/Integrations`](/sunpaste/admin/integrations) page.
+
+## Playground
+
+Controls sharing and privacy for the home page and shared links.
+
+### Link visibility
+
+`Enable Private Mode (links require authentication)`
+
+When enabled:
+
+* Anonymous users cannot save/share from `/`
+* Public and unlisted viewer links require login
+* Raw-style shared links require login
+* API-style shared access requires login
+
+When disabled, public and unlisted sharing works for anonymous visitors again.
+
+### Burn After Read (global)
+
+`Force Burn-After-Read pastes`
+
+When enabled, all new pastes are one-time pastes and users cannot opt out. When disabled, creators choose burn-after-read per paste.

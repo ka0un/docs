@@ -1,0 +1,34 @@
+---
+title: "User Management"
+description: "Create, edit, disable and delete SunPaste users."
+icon: "users"
+---
+
+User management lives at `/admin/users`. The grid shows ID, Username, Email, Enabled, Roles and Actions.
+
+## Add a user
+
+The add-user dialog includes username, email, password, confirm password and role selection. When you save, the password is hashed, the user is enabled by default, and the chosen roles are assigned.
+
+If you don't select a role, SunPaste tries to assign `ROLE_USER`.
+
+<Warning>
+If `ROLE_USER` does not exist, adding a user can fail. Create that role first on the [Role Management](/sunpaste/admin/role-management) page if you want a default user role.
+</Warning>
+
+## Edit a user
+
+You can change the email, enabled/disabled state and assigned roles. The username is read-only.
+
+## Delete a user
+
+Delete removes the selected user after confirmation.
+
+## The admin account
+
+The settings-based admin account is treated specially:
+
+* It appears as a virtual row in the grid
+* It cannot be edited like a normal user
+* It cannot be deleted
+* The grid sends you to [Settings](/sunpaste/admin/settings) for admin-account changes

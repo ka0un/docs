@@ -1,0 +1,60 @@
+---
+title: "Obfuscation Tips"
+description: "Best practices for a smooth and secure obfuscation process."
+icon: "lightbulb"
+---
+
+Code obfuscation is an essential technique to protect your software from reverse engineering and unauthorized tampering. However, it must be used thoughtfully to avoid unintended issues.
+
+## 1. Always test your code after obfuscation
+
+Obfuscation can sometimes change the behavior of your application. Always run and test your obfuscated code to verify it works correctly.
+
+## 2. Do not obfuscate dependencies
+
+Obfuscating third-party libraries or dependencies can lead to runtime errors or broken functionality. Only obfuscate your **own code**, especially when dealing with JAR files and Minecraft plugins.
+
+<Tip>
+Always **specify your main package** to prevent the obfuscator from accidentally modifying system or library code.
+</Tip>
+
+## 3. Try alternative obfuscators if one fails
+
+SunGuard provides **multiple obfuscation engines**. If one obfuscator fails, try a different engine. This increases your chances of finding a configuration that works for your project.
+
+## 4. Obfuscate only what you need
+
+Not all code needs to be obfuscated. Focus on:
+
+* Sensitive business logic
+* License validation mechanisms
+* Proprietary algorithms
+
+Avoid wasting time obfuscating code that is already public or non-critical.
+
+## 5. Back up before obfuscation
+
+Always keep an un-obfuscated backup of your project so you can quickly revert if something goes wrong.
+
+## 6. Don't obfuscate during early development
+
+Use obfuscation as part of your **release process**, not during active development. It slows down debugging and makes collaboration harder.
+
+## 7. Avoid over-obfuscation
+
+Using every obfuscation feature can lead to:
+
+* Increased file size
+* Slower performance
+* Hard-to-trace bugs
+
+Start simple and gradually enable advanced features as needed.
+
+## 8. Combine with other security measures
+
+Obfuscation is just one layer of protection. Combine it with:
+
+* License key validation (see [SunLicense](/sunlicense/overview))
+* HWID/IP checks
+* API security
+* Encryption

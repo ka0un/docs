@@ -1,0 +1,47 @@
+---
+title: "PC App (Windows)"
+description: "Run SunGuard on Windows with the SGL Launcher."
+icon: "desktop"
+---
+
+## Step 1: Install Java 21
+
+1. Download Java 21 from the [Oracle website](https://www.oracle.com/java/technologies/javase/jdk21-archive-downloads.html) or [Adoptium](https://adoptium.net/).
+2. Install it and verify by running this in Command Prompt:
+
+```cmd
+java -version
+```
+
+## Step 2: Download SunGuard
+
+<CardGroup cols={2}>
+  <Card title="Download server.jar" icon="arrow-up-right-from-square" href="https://builtbybit.com/resources/sunguard-code-obfuscator.66409/">
+    From BuiltByBit.
+  </Card>
+  <Card title="Download SGL Launcher" icon="download" href="https://1966745675-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FAkV3l0gOdni6Twie5DXS%2Fuploads%2F9hZyIsDZ6eFD17INImnS%2FSunguard%20Launcher%20V1.zip?alt=media&token=86733708-7658-4858-b250-94ff6ecf978d">
+    Unzip to get `SGL.exe`.
+  </Card>
+</CardGroup>
+
+Place `SGL.exe` and `server.jar` in the same directory, for example `C:\SunGuard`.
+
+## Step 3: Run SunGuard
+
+<Warning>
+The first start takes around **10 minutes**, because SunGuard downloads all the necessary dependencies.
+</Warning>
+
+1. Run `SGL.exe`.
+2. Add your [license key](/license-key) to the newly created `license.txt` file.
+3. The SunGuard GUI dashboard appears. Wait until the server starts.
+4. Your browser opens and you can access SunGuard.
+
+## Step 4: Use the dashboard
+
+* Log in with username `admin` and password `admin`.
+* Drag and drop your `.jar` files.
+* Select your desired obfuscation settings.
+* Click **Start Obfuscation**.
+
+✅ You're all set! SunGuard is now ready to secure your `.jar` files.

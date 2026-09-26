@@ -1,0 +1,54 @@
+---
+title: "BuiltByBit Automation"
+description: "Issue SunLicense keys automatically when users download your BuiltByBit product."
+icon: "cart-shopping"
+---
+
+<Steps>
+  <Step title="Get the webhook URL">
+    1. Go to the **Integrations** page in SunLicense.
+    2. Select your product.
+    3. Copy the **Webhook URL**. It looks like this:
+
+    ```
+    {yourdomain}/api/v1/bbb/{productId}
+    ```
+  </Step>
+  <Step title="Create a placeholder in BuiltByBit">
+    1. Open the [BuiltByBit Placeholders](https://builtbybit.com/resources/dashboard/placeholders) page.
+    2. Click **Create New Placeholder**.
+    3. Set the placeholder name to something like:
+
+    ```
+    %%__MyProduct_License__%%
+    ```
+
+    4. Set **Type** to `External License Key`.
+    5. Paste the copied **Webhook URL** in the URL field.
+    6. Copy the **Secret Key** from the SunLicense **Integrations** page and paste it in BuiltByBit.
+    7. Save the placeholder.
+  </Step>
+  <Step title="Use the placeholder in your product">
+    When using the SunLicense API in your product, assign the placeholder string to the license key variable. Example in Java:
+
+    ```java
+    String key = "%%__MyProduct_License__%%";
+
+    SunLicenseAPI api = SunLicenseAPI.getLicense(
+        key,     // License key
+        1,       // Product ID (integer)
+        "1.0.0", // Product version
+        "http://yourdomain.com/" // API endpoint
+    );
+
+    api.validate();
+    ```
+  </Step>
+  <Step title="Automatic license assignment">
+    * When users download your product, BuiltByBit automatically creates a new license in SunLicense.
+    * The placeholder `%%__MyProduct_License__%%` is replaced with the user's actual license key.
+    * The user's download is validated automatically, without them entering a license key.
+  </Step>
+</Steps>
+
+Your BuiltByBit product is now integrated with SunLicense for seamless license management.

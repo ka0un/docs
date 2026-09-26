@@ -1,0 +1,57 @@
+---
+title: "License API"
+sidebarTitle: "License API (V1)"
+description: "Validate a product license with a single request."
+icon: "check-double"
+---
+
+## License Validation Request V1
+
+<Badge color="green">POST</Badge> `/api/v1/validate`
+
+Validates a product license.
+
+### Headers
+
+| Name | Value |
+| --- | --- |
+| Content-Type | `application/json` |
+
+### Body
+
+| Name | Type | Description | Required |
+| --- | --- | --- | --- |
+| `licenseKey` | string | License key of the user | Required |
+| `productId` | number | Product ID of the license | Required |
+| `hwid` | string | Hardware ID of the device | Required |
+| `productVersion` | string | Product version | Optional |
+| `ip` | string | Client-provided IP address | Optional |
+| `macAddress` | string | MAC address | Optional |
+| `operatingSystem` | string | Operating system of the device | Optional |
+| `operatingSystemVersion` | string | OS version of the device | Optional |
+| `operatingSystemArchitecture` | string | CPU architecture of the device (ARM / x86) | Optional |
+| `javaVersion` | string | Java version installed on the device | Optional |
+
+### Response
+
+<CodeGroup>
+```json 200
+{
+    "message": "License validated",
+    "status": 200,
+    "timestamp": "2025-01-27T19:01:25.710+00:00"
+}
+```
+
+```json 400
+{
+    "message": "Max IPs reached",
+    "status": 400,
+    "timestamp": "2025-01-27T20:01:34.140+00:00"
+}
+```
+</CodeGroup>
+
+<Card title="Download the Postman collection" icon="download" href="/files/sunlicense/SunLicense.postman_collection.json">
+  SunLicense.postman_collection.json
+</Card>

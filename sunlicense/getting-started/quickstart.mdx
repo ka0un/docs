@@ -1,0 +1,118 @@
+---
+title: "Quickstart"
+description: "Step-by-step guide to set up SunLicense on a Pterodactyl panel."
+icon: "rocket"
+---
+
+<Frame caption="SunLicense Server Setup Guide">
+  <iframe className="w-full aspect-video rounded-xl" src="https://www.youtube.com/embed/objpAGzFlgM" title="SunLicense Server Setup Guide" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+</Frame>
+
+## Step 1: Purchase and download `server.jar`
+
+<Steps>
+  <Step title="Visit the SunLicense resource page">
+    Go to the [SunLicense resource page](https://builtbybit.com/resources/sunlicense-license-management-system.58359/) to purchase your license. See [Where to buy](/where-to-buy) for other marketplaces.
+  </Step>
+  <Step title="Choose a payment method">
+    You can pay with **PayPal**, **Credit/Debit Card** or **Cryptocurrency**. All payments are processed securely through Tebex.
+  </Step>
+  <Step title="Download the server.jar file">
+    Once your purchase is complete, you can download the `server.jar` file.
+  </Step>
+</Steps>
+
+<Check>
+While purchasing the license, you can also add **Managed Hosting**. With this add-on, we manage and host your server, and you don't need to do anything beyond this step. See [Managed Hosting](/sunlicense/services/managed-hosting).
+</Check>
+
+## Step 2: Request a license key
+
+Join our Discord server, go to the **#premium** channel and click **Request License**. A developer will send you your license key shortly. Keep it safe, as you'll need it later.
+
+See [Get your license key](/license-key) for the full steps.
+
+## Step 3: Import SunLicenseEggShell to Pterodactyl
+
+<Card title="Download SunLicenseEggShell (egg-generic-java.json)" icon="download" href="/files/sunlicense/egg-generic-java.json">
+  A modified generic Java egg for running SunLicense on Pterodactyl Panel. The Generic Java Egg was created by [parkervcp](https://github.com/parkervcp).
+</Card>
+
+<Steps>
+  <Step title="Download the SunLicenseEggShell">
+    Download the egg file from the link above.
+  </Step>
+  <Step title="Go to your Pterodactyl admin dashboard">
+    Log in to your Pterodactyl admin panel.
+  </Step>
+  <Step title="Navigate to Nests">
+    In the **Service Management** section, select **Nests**.
+  </Step>
+  <Step title="Import the egg">
+    Click the green **Import Egg** button and upload the egg file you downloaded.
+  </Step>
+</Steps>
+
+<Frame>
+  ![Importing the egg in Pterodactyl](/images/sunlicense/quickstart-import-egg.png)
+</Frame>
+
+## Step 4: Create and start a server
+
+<Steps>
+  <Step title="Go to the Servers section">
+    Navigate to the **Servers** section in your Pterodactyl panel.
+  </Step>
+  <Step title="Click Create Server">
+    Select the **Create Server** button to set up a new server.
+  </Step>
+  <Step title="Configure server resources">
+    SunLicense typically requires these minimum resources:
+
+    * **CPU Cores**: 1 Core
+    * **RAM**: 1 GB
+    * **Storage**: 2 GB
+
+    Adjust these settings based on your requirements.
+  </Step>
+  <Step title="Select the egg">
+    Choose the egg you imported in the previous step.
+  </Step>
+  <Step title="Upload server.jar">
+    Go to the **Files** tab of the new server and upload `server.jar`.
+  </Step>
+  <Step title="Create license.txt">
+    * Create a file called `license.txt` next to `server.jar`.
+    * Paste the license key you received in Step 2.
+    * Save the file and start the server.
+  </Step>
+</Steps>
+
+<Frame>
+  ![server.jar and license.txt in the server files](/images/sunlicense/quickstart-server-files.png)
+</Frame>
+
+<Info>
+On the first start, the SunLicense server automatically downloads the required dependencies. This can take several minutes, and a folder named `.m2` will be created. Wait until the process is complete.
+</Info>
+
+## Step 5: Access the SunLicense dashboard
+
+<Steps>
+  <Step title="Visit your server address">
+    Open `http://{serverip}:{port}` in your browser, replacing `{serverip}` and `{port}` with your server's IP address and port.
+  </Step>
+  <Step title="Log in">
+    Use the default credentials:
+
+    * **Username**: `admin`
+    * **Password**: `admin`
+  </Step>
+  <Step title="Update your credentials">
+    Go to the **Settings** page and change the default credentials.
+  </Step>
+</Steps>
+
+## Congratulations 🎉
+
+You have successfully set up the SunLicense server. Next, learn how to use the [Dashboard](/sunlicense/getting-started/dashboard).
