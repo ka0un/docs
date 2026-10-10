@@ -15,18 +15,16 @@ The SunGuard app runs SunGuard on your own computer. It installs Java for you, c
 - **Windows 10 or 11** (64-bit) or **macOS 11 or newer** (Apple silicon or Intel)
 - The SunGuard server file, for example `SunGuard-1.1.1.jar`, from [BuiltByBit](https://builtbybit.com/resources/sunguard-code-obfuscator.66409/) or wherever you bought SunGuard
 - Your license key. See [Get your license key](/license-key).
-- An internet connection. The first start downloads about 350 MB (Java and SunGuard's components). Later starts don't download anything.
+- An internet connection. The first start downloads SunGuard's components (about 155 MB), plus Java (about 190 MB) if you don't already have Java 21 installed. Later starts don't download anything.
 
 ## Step 1: Install the app
 
-{/* TODO: replace both hrefs with the public download links for the installers built by GitHub Actions. */}
-
 <CardGroup cols={2}>
-  <Card title="Download for Windows" icon="windows" href="WINDOWS_DOWNLOAD_URL">
+  <Card title="Download for Windows" icon="windows" href="https://github.com/ka0un/sunguard-launcher/releases/latest/download/SunGuard-Setup-Windows.exe">
     Windows 10 and 11, 64-bit. About 10 MB.
   </Card>
 
-  <Card title="Download for macOS" icon="apple" href="MAC_DOWNLOAD_URL">
+  <Card title="Download for macOS" icon="apple" href="https://github.com/ka0un/sunguard-launcher/releases/latest/download/SunGuard-macOS.dmg">
     macOS 11 or newer, Apple silicon and Intel. About 10 MB.
   </Card>
 </CardGroup>
@@ -35,7 +33,7 @@ The SunGuard app runs SunGuard on your own computer. It installs Java for you, c
   <Tab title="Windows">
     <Steps>
       <Step title="Run the installer">
-        Double-click `SunGuard_x.y.z_x64-setup.exe`. It installs for your Windows user only, so it doesn't ask for administrator rights.
+        Double-click `SunGuard-Setup-Windows.exe`. It installs for your Windows user only, so it doesn't ask for administrator rights.
       </Step>
       <Step title="If you see “Windows protected your PC”">
         Click **More info**, then **Run anyway**. Windows shows this for apps that aren't signed with a paid certificate. You only see it once.
@@ -48,7 +46,7 @@ The SunGuard app runs SunGuard on your own computer. It installs Java for you, c
   <Tab title="macOS">
     <Steps>
       <Step title="Install">
-        Open `SunGuard_x.y.z_universal.dmg` and drag **SunGuard** into **Applications**.
+        Open `SunGuard-macOS.dmg` and drag **SunGuard** into **Applications**.
       </Step>
       <Step title="Open it the first time">
         Open **SunGuard** from Applications. macOS says it can't verify the app, because it isn't signed with a paid Apple certificate. Click **Done**.
