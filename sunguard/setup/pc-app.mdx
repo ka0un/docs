@@ -1,47 +1,237 @@
 ---
-title: "PC App (Windows)"
-description: "Install Java 21, place SGL.exe and server.jar in one folder, add your license key to license.txt, and use the SunGuard dashboard to obfuscate .jar files."
+title: "PC App (Windows & macOS)"
+description: "Install the SunGuard app on Windows or macOS, choose your server.jar, enter your license key once, and the app installs Java and runs SunGuard for you."
 icon: "desktop"
 ---
 
-## Step 1: Install Java 21
+The SunGuard app runs SunGuard on your own computer. It installs Java for you, checks your license key, and starts the server. You don't need to install Java, move files into folders, or edit `license.txt`.
 
-1. Download Java 21 from the [Oracle website](https://www.oracle.com/java/technologies/javase/jdk21-archive-downloads.html) or [Adoptium](https://adoptium.net/).
-2. Install it and verify by running this in Command Prompt:
+<Note>
+  Coming from the old launcher (`SGL.exe`)? The new app replaces it and can import your existing setup. See [Moving from the old launcher](#moving-from-the-old-launcher).
+</Note>
 
-```cmd
-java -version
-```
+## What you need
 
-## Step 2: Download SunGuard
+- **Windows 10 or 11** (64-bit) or **macOS 11 or newer** (Apple silicon or Intel)
+- The SunGuard server file, for example `SunGuard-1.1.1.jar`, from [BuiltByBit](https://builtbybit.com/resources/sunguard-code-obfuscator.66409/) or wherever you bought SunGuard
+- Your license key. See [Get your license key](/license-key).
+- An internet connection. The first start downloads about 350 MB (Java and SunGuard's components). Later starts don't download anything.
+
+## Step 1: Install the app
+
+{/* TODO: replace both hrefs with the public download links for the installers built by GitHub Actions. */}
 
 <CardGroup cols={2}>
-  <Card title="Download server.jar" icon="arrow-up-right-from-square" href="https://builtbybit.com/resources/sunguard-code-obfuscator.66409/">
-    From BuiltByBit.
+  <Card title="Download for Windows" icon="windows" href="WINDOWS_DOWNLOAD_URL">
+    Windows 10 and 11, 64-bit. About 10 MB.
   </Card>
-  <Card title="Download SGL Launcher" icon="download" href="https://1966745675-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FAkV3l0gOdni6Twie5DXS%2Fuploads%2F9hZyIsDZ6eFD17INImnS%2FSunguard%20Launcher%20V1.zip?alt=media&token=86733708-7658-4858-b250-94ff6ecf978d">
-    Unzip to get `SGL.exe`.
+
+  <Card title="Download for macOS" icon="apple" href="MAC_DOWNLOAD_URL">
+    macOS 11 or newer, Apple silicon and Intel. About 10 MB.
   </Card>
 </CardGroup>
 
-Place `SGL.exe` and `server.jar` in the same directory, for example `C:\SunGuard`.
+<Tabs>
+  <Tab title="Windows">
+    <Steps>
+      <Step title="Run the installer">
+        Double-click `SunGuard_x.y.z_x64-setup.exe`. It installs for your Windows user only, so it doesn't ask for administrator rights.
+      </Step>
+      <Step title="If you see “Windows protected your PC”">
+        Click **More info**, then **Run anyway**. Windows shows this for apps that aren't signed with a paid certificate. You only see it once.
+      </Step>
+      <Step title="Open SunGuard">
+        Open **SunGuard** from the Start menu or the desktop shortcut.
+      </Step>
+    </Steps>
+  </Tab>
+  <Tab title="macOS">
+    <Steps>
+      <Step title="Install">
+        Open `SunGuard_x.y.z_universal.dmg` and drag **SunGuard** into **Applications**.
+      </Step>
+      <Step title="Open it the first time">
+        Open **SunGuard** from Applications. macOS says it can't verify the app, because it isn't signed with a paid Apple certificate. Click **Done**.
+      </Step>
+      <Step title="Allow it in System Settings">
+        Open **System Settings → Privacy & Security**, scroll down to the message about SunGuard, and click **Open Anyway**. Enter your password if asked, then click **Open**. You only do this once.
 
-## Step 3: Run SunGuard
+        On macOS 14 or older you can instead right-click SunGuard in Applications, choose **Open**, then click **Open** again.
+      </Step>
+    </Steps>
+  </Tab>
+</Tabs>
+
+## Step 2: Choose your server file
+
+<Frame>
+  <img
+    src="/images/sunguard/pc-app/setup-welcome.png"
+    alt="SunGuard welcome screen listing the server file and license key, with a Get started button"
+  />
+</Frame>
+
+1. Click **Get started**. Java starts downloading in the background right away; you can see its progress at the top right.
+2. Drag your `SunGuard-x.y.z.jar` into the window, or click **Browse…** and choose it. You can also choose the `.zip` you downloaded; the app finds the server file inside.
+3. When you see a green **SunGuard Server x.y.z**, click **Continue**.
+
+<Frame>
+  <img
+    src="/images/sunguard/pc-app/setup-file.png"
+    alt="Choose your SunGuard server file screen showing SunGuard Server 1.1.1 accepted"
+  />
+</Frame>
+
+The app keeps its own copy of the server file, so you can delete the download afterwards. If you choose the wrong file, the app tells you what it is and what to choose instead. See [Troubleshooting](#troubleshooting).
+
+## Step 3: Enter your license key
+
+1. Paste your license key.
+2. Click **Check key**. The app checks it with the license server for this computer.
+3. When you see **License active**, click **Continue**.
+
+<Frame>
+  <img
+    src="/images/sunguard/pc-app/setup-license.png"
+    alt="Enter your license key screen showing License active"
+  />
+</Frame>
+
+You only enter your key once. The app remembers it.
+
+## Step 4: First start
 
 <Warning>
-The first start takes around **10 minutes**, because SunGuard downloads all the necessary dependencies.
+  The first start downloads SunGuard's components (about 155 MB). This usually takes **3 to 5 minutes**. Keep the app open. Later starts take a few seconds.
 </Warning>
 
-1. Run `SGL.exe`.
-2. Add your [license key](/license-key) to the newly created `license.txt` file.
-3. The SunGuard GUI dashboard appears. Wait until the server starts.
-4. Your browser opens and you can access SunGuard.
+<Frame>
+  <img
+    src="/images/sunguard/pc-app/first-start.png"
+    alt="Starting SunGuard for the first time, with a checklist and a progress bar for server components"
+  />
+</Frame>
 
-## Step 4: Use the dashboard
+Click **Show details** if you want to see the server's output while it starts.
 
-* Log in with username `admin` and password `admin`.
-* Drag and drop your `.jar` files.
-* Select your desired obfuscation settings.
-* Click **Start Obfuscation**.
+## Step 5: Open SunGuard
+
+When you see **SunGuard is running**, click **Open SunGuard**. SunGuard opens in its own window. To use your web browser instead, click **Open in browser**.
+
+<Frame>
+  <img
+    src="/images/sunguard/pc-app/dashboard.png"
+    alt="SunGuard is running, with Open SunGuard, Open in browser, Restart and Stop buttons"
+  />
+</Frame>
+
+1. Log in with username `admin` and password `admin`.
+2. Change the password in SunGuard under **Settings → Account**.
+3. Drag and drop your `.jar` files, choose your obfuscation settings, and click **Start Obfuscation**.
+
+Files you download from SunGuard go to your **Downloads** folder.
 
 ✅ You're all set! SunGuard is now ready to secure your `.jar` files.
+
+## Everyday use
+
+- **Starting:** open the SunGuard app. It starts the server by itself and doesn't ask any questions.
+- **Closing the window:** the first time, the app asks whether to keep SunGuard running in the background. If you keep it running, reopen the window from the SunGuard icon in the menu bar (macOS) or system tray (Windows).
+- **Quitting:** use **Quit SunGuard** in the menu bar or tray icon. This stops the server cleanly.
+
+<Frame>
+  <img
+    src="/images/sunguard/pc-app/close.png"
+    alt="Keep SunGuard running? dialog with Stop SunGuard and quit and Keep running buttons"
+  />
+</Frame>
+
+### Settings
+
+Click **Settings** at the top right to:
+
+- update SunGuard to a new version (**Server file → Update…**)
+- change your license key
+- give SunGuard more memory for large files
+- start SunGuard when you log in to your computer
+- choose whether SunGuard opens in its own window or your browser
+
+<Frame>
+  <img
+    src="/images/sunguard/pc-app/settings.png"
+    alt="SunGuard settings with server file, license key, memory, and app options"
+  />
+</Frame>
+
+## Updating SunGuard
+
+1. Download the new `SunGuard-x.y.z.jar`.
+2. In the app, go to **Settings → Server file → Update…** and choose the new file.
+3. Click **Use this file and restart**.
+
+Your SunGuard data, login and license key stay as they are. The app keeps the previous version, so if the new one has a problem you can click **Go back to x.y.z** in Settings.
+
+## Troubleshooting
+
+When something goes wrong, the app tells you what happened and offers a button to fix it.
+
+<Frame>
+  <img
+    src="/images/sunguard/pc-app/problem.png"
+    alt="Your license key was not accepted, with Change license key, Try again and Open setup guide buttons"
+  />
+</Frame>
+
+<AccordionGroup>
+  <Accordion title="“This is a Minecraft plugin, not the SunGuard server”">
+    You chose a plugin `.jar` instead of the SunGuard server. Choose the server file from your SunGuard purchase, usually named `SunGuard-x.y.z.jar`.
+
+    <Frame>
+      <img
+        src="/images/sunguard/pc-app/setup-file-error.png"
+        alt="Error shown when a Minecraft plugin is chosen instead of the SunGuard server"
+      />
+    </Frame>
+
+    The app also tells you if the file didn't finish downloading, is damaged, or is the old launcher. In each case, download the server file again from the store and choose it.
+  </Accordion>
+
+  <Accordion title="“Your license key was not accepted”">
+    Check that you're using the key for your SunGuard purchase. If you moved SunGuard to a new computer, contact support to reset your key, then click **Try again**. To enter a different key, click **Change license key**.
+  </Accordion>
+
+  <Accordion title="“Can't reach the license server” or “Couldn't download server components”">
+    Something is blocking SunGuard's internet connection. Common causes are a VPN, a school or office network, or antivirus web protection.
+
+    Go to **Settings → Advanced → Test connection** to see which connection is blocked, fix it, then click **Try again**.
+  </Accordion>
+
+  <Accordion title="Getting help from support">
+    Go to **Settings → Advanced → Save diagnostics**. The app saves a `SunGuard-diagnostics-….zip` file to your Desktop with logs and system details. Your license key is hidden in this file. Attach it to your support ticket.
+  </Accordion>
+
+  <Accordion title="Where does SunGuard keep its files?">
+    - macOS: `~/Library/SunGuard`
+    - Windows: `%LOCALAPPDATA%\SunGuard`
+
+    Click **Settings → Data folder → Show** to open it. Don't move or edit these files while SunGuard is running.
+  </Accordion>
+</AccordionGroup>
+
+## Moving from the old launcher
+
+If you used the old launcher (`SGL.exe`), you can bring over your server file, license key, and SunGuard data (login and history):
+
+1. Install and open the new app.
+2. On the welcome screen, click **I used the old launcher, import my setup**.
+3. Choose the folder that contains `SGL.exe` and `server.jar`.
+4. Check your license key and click **Continue**.
+
+After SunGuard runs in the new app, you can delete the old folder.
+
+## Uninstalling
+
+- **Windows:** **Settings → Apps → Installed apps → SunGuard → Uninstall**.
+- **macOS:** quit SunGuard, then drag it from **Applications** to the Trash.
+
+This removes the app but keeps your SunGuard data. To remove everything, also delete the data folder listed under [Where does SunGuard keep its files?](#troubleshooting).
