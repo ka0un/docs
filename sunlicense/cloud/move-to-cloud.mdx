@@ -82,7 +82,17 @@ The preview also lists anything specific to your data under **things to know bef
 
 - You manage products, licenses and customers in SunLicense Cloud. Editing on your server turns off, and it shows when it moved.
 - Changes through your server's API (`/api/v2`) and the BuiltByBit webhook are refused with `409` and the message to make the change in SunLicense Cloud. Reads and validation keep working.
-- Changed your mind? Click **Move back** on the SunLicense Cloud page. Editing turns on again on your server. Changes made in Cloud since the move aren't copied back.
+- Changed your mind? Click **Move back** on the **Cloud** page. Editing turns on again on your server. Changes made in Cloud since the move aren't copied back.
+
+## Sign in to SunLicense Cloud
+
+Once moved, the **Cloud** page starts with **Sign in to SunLicense Cloud**:
+
+- **Sign-in page**: where you sign in, [app.sunlicense.com/login](https://app.sunlicense.com/login).
+- **Account**: the email of the SunLicense Cloud account, partly hidden, for example `ka•••@example.com`.
+- **Password**: your SunLicense Cloud password. Your server never has it.
+
+Don't know the password? Click **Email me a sign-in link**. SunLicense Cloud emails the account's owner a link that works once: open it, choose a new password, and sign in. Only that inbox can use the link, so none of your server's other admins can get into the account. Nothing arrived? Check spam, or click **Forgot password** on the sign-in page.
 
 ## Before you turn this server off
 
