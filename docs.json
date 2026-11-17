@@ -59,6 +59,7 @@
             "pages": [
               "sunlicense/overview",
               "sunlicense/getting-started/quickstart",
+              "sunlicense/getting-started/update",
               "sunlicense/getting-started/vps-setup",
               "sunlicense/getting-started/dashboard"
             ]
