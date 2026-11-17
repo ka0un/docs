@@ -1,0 +1,54 @@
+---
+title: "Update SunLicense to 1.4.0"
+sidebarTitle: "Update to 1.4.0"
+description: "Update a SunLicense server to 1.4.0: make a backup, replace server.jar and start it. Your keys, API tokens and the plugins you shipped keep working."
+keywords: ["update", "upgrade", "1.4.0", "server.jar", "backup", "migration"]
+icon: "arrow-up-right-dots"
+---
+
+SunLicense 1.4.0 updates in place from 1.2 or later. Your products, licenses, customers, blacklists and API tokens stay, and plugins you already shipped get the same answers as before.
+
+## Before you update
+
+- Make a backup on the **Backups** page with **Back up now**, and click **Download** to keep a copy somewhere else.
+- Check that the server runs Java 17 or later. Java 21 is recommended.
+- Keep `license.txt` next to `server.jar`, as before.
+
+## Update
+
+<Steps>
+  <Step title="Stop the server">
+    Stop SunLicense the way you usually do, for example **Stop** in Pterodactyl or `Ctrl+C` in tmux.
+  </Step>
+  <Step title="Replace server.jar">
+    Download SunLicense 1.4.0 and replace your `server.jar` with it. Leave the `data` folder and `license.txt` where they are.
+  </Step>
+  <Step title="Start the server">
+    Start it as before. The first start updates the database, which takes longer on a big install: about 30 seconds for 50,000 licenses and 500,000 logged validations. Later starts are as quick as before.
+  </Step>
+  <Step title="Sign in">
+    Sign in with your usual admin account. The dashboard has a new look: a grouped menu, and settings on one page. See [Use the SunLicense dashboard](/sunlicense/getting-started/dashboard).
+  </Step>
+</Steps>
+
+## What stays the same
+
+- **Plugins you shipped**: `/api/v1`, `/api/v2` and `/api/v3` validation answer exactly as in 1.3.4. Nothing to change in your plugins.
+- **API tokens and the REST API**: same routes, same tokens, same answers.
+- **Settings**: new options that would change how your server behaves start the way 1.3.4 worked, until you turn them on.
+
+## What's new
+
+- A new dashboard design, with links to these docs on each page.
+- Customer emails: keys, expiry reminders, and suspended, revoked or reinstated licenses. They're off on updated servers until you turn them on under **Settings › Emails**.
+- **Lost your license key?** on the customer sign-in page. Keys only ever go to the email on file.
+- `/api/v4/validate`: validation answers signed with a public key. The plugin code generator writes v4 code. See [API and signing](/sunlicense/dashboard/api-and-signing).
+- A faster dashboard on big installs, and a choice of how long the request log is kept.
+- Optional SunLicense Cloud services, and moving to SunLicense Cloud in a few steps. See [Three ways to run](/sunlicense/cloud/overview).
+
+## If something goes wrong
+
+- If the server stops during the first start, start it again: an update that was interrupted picks up where it stopped.
+- To go back to 1.3.4, stop the server and put the 1.3.4 `server.jar` back: it runs on the updated database. Changes you made in 1.4.0's new features, such as customer emails, stay unused until you update again.
+- Coming from an older version, restore the backup you made before updating instead.
+- Still stuck? Contact [SunDevs support](https://sundevs.net) with the last lines of the server's log.

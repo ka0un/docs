@@ -59,8 +59,26 @@
             "pages": [
               "sunlicense/overview",
               "sunlicense/getting-started/quickstart",
+              "sunlicense/getting-started/update",
               "sunlicense/getting-started/vps-setup",
               "sunlicense/getting-started/dashboard"
+            ]
+          },
+          {
+            "group": "Dashboard",
+            "pages": [
+              "sunlicense/dashboard/settings",
+              "sunlicense/dashboard/license-keys",
+              "sunlicense/dashboard/network-and-security",
+              "sunlicense/dashboard/api-and-signing"
+            ]
+          },
+          {
+            "group": "SunLicense Cloud",
+            "pages": [
+              "sunlicense/cloud/overview",
+              "sunlicense/cloud/services",
+              "sunlicense/cloud/move-to-cloud"
             ]
           },
           {
