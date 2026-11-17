@@ -64,6 +64,23 @@
             ]
           },
           {
+            "group": "Dashboard",
+            "pages": [
+              "sunlicense/dashboard/settings",
+              "sunlicense/dashboard/license-keys",
+              "sunlicense/dashboard/network-and-security",
+              "sunlicense/dashboard/api-and-signing"
+            ]
+          },
+          {
+            "group": "SunLicense Cloud",
+            "pages": [
+              "sunlicense/cloud/overview",
+              "sunlicense/cloud/services",
+              "sunlicense/cloud/move-to-cloud"
+            ]
+          },
+          {
             "group": "API Reference",
             "pages": [
               "sunlicense/api-documentation/license-api",

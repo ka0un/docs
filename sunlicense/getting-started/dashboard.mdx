@@ -1,106 +1,130 @@
 ---
-title: "Dashboard"
-description: "Manage products, licenses, blacklists and license requests in the SunLicense web dashboard."
+title: "Use the SunLicense dashboard"
+sidebarTitle: "Dashboard"
+description: "A tour of the SunLicense 1.4.0 dashboard: Home, products, licenses, customers, validations, blacklists and backups, with what you can do on each page."
+keywords: ["dashboard", "products", "licenses", "customers", "validations", "blacklist", "backups", "admin panel"]
 icon: "gauge"
 ---
 
-<Frame>
-  <iframe className="w-full aspect-video rounded-xl" src="https://www.youtube.com/embed/3JVEtzH3et4" title="SunLicense Dashboard" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+The SunLicense dashboard is where you manage products, licenses and customers. Open your server's address in a browser, for example `http://{serverip}:{port}`, and sign in with an admin account. This page walks through each part of the menu in SunLicense 1.4.0.
+
+## Home
+
+<Frame caption="Home on a new server">
+  ![The Home page with the How do you want to run SunLicense card, the Get started checklist and the totals](/images/sunlicense/v1/home.png)
 </Frame>
 
-The **Web Dashboard** is the central interface for managing your license system. You can access it via your server address (for example, `http://{serverip}:{port}`). Authentication is required, and access is restricted to users with the `ROLE_ADMIN` permission.
+- **How do you want to run SunLicense?** appears once, on new and upgraded servers. See [Three ways to run](/sunlicense/cloud/overview). Click **Not now** to decide later.
+- **Get started** lists the steps that make a new server ready, such as setting the public URL and your time zone. **Set up** opens the right setting. **Hide** removes the list once you're done.
+- The totals show active licenses, validations in the last 30 days, customers and products. Below them, a chart shows validations by day.
 
-## 1. Product management
+## Products
 
-The **Products** view lets you define the software or resources that your license keys validate against.
+A product is the plugin, mod, bot or app you sell. Every license belongs to one product.
 
-### 1.1. Creating a product
+<Frame>
+  ![The Products list with name, type, limits and 30-day requests](/images/sunlicense/v1/products.png)
+</Frame>
 
-In the **Create Products** tab, define the foundational settings for all future licenses of this product:
+Click **New product** and fill in:
 
-| Field | Description |
+| Field | What it does |
 | --- | --- |
-| **Name & Description** | Standard identifier fields. Name is required and must be unique. |
-| **Product Type** | Choose from `MINECRAFT_JAVA_PLUGIN`, `WEB_APPLICATION`, `DISCORD_BOTS`, or `OTHER`. If `OTHER` is selected, an **Other Product Type** text field appears (required). |
-| **Default Max IPs** | Max number of unique IPs per license. `-1` = unlimited, `0` = none. Default: **5**. |
-| **Default Max HWIDs** | Max number of Hardware IDs per license. `-1` = unlimited, `0` = none. Default: **5**. |
-| **Product Role Id** | Discord Role ID assigned when a user redeems a license. |
-| **Product Purchase Role Id** | Discord Role ID marking a user as a purchaser (required for `/get-license` in Discord). |
-| **Product URL / Image URL** | Used for display in the Customer Dashboard. |
+| **Name** and **Product type** | Required. The type is Minecraft Java plugin, Discord bot, web application or another type. |
+| **Default max IPs** / **Default max HWIDs** | How many IP addresses and machines a new license allows. Tick **Unlimited** for no limit. You can change it per license. |
+| **Max concurrent sessions** | How many copies may run with one license at the same time, counted by heartbeats. Empty means no limit. |
+| **Store page URL** / **Image URL** | Shown to buyers in the customer dashboard. |
+| **Discord** | The roles a buyer gets when they redeem a license in your Discord server. |
+| **Key design** | This product's key code, and optionally its own key design. See [License keys](/sunlicense/dashboard/license-keys). |
 
-### 1.2. Managing and updating products
+To edit or delete a product, use the menu at the end of its row. A product that has licenses can't be deleted.
 
-The **Manage Products** tab displays products in a grid:
+## Licenses
 
-* **Updating**: Edit properties such as default limits, roles, and names.
-* **Deletion**: Products with active licenses **cannot** be deleted. Attempting it shows the error `"Product has licenses, cannot delete"`.
+<Frame>
+  ![The Licenses list with masked keys, product, customer, status and notes](/images/sunlicense/v1/licenses.png)
+</Frame>
 
-## 2. License management
+Keys are masked, for example `XXXX-XXXX-XXXX-XXXX-PF91`. Search by key, customer, email or Discord name, and use **Export CSV** to download the list.
 
-The **Licenses** view lets you generate, modify, and track license keys.
+### Create a license
 
-### 2.1. Creating a license
+<Frame>
+  ![The New license dialog with customer, product, license type, status, limits and the generated key](/images/sunlicense/v1/new-license.png)
+</Frame>
 
-The **Create License** tab handles key generation and assignment.
+<Steps>
+  <Step title="Click New license">
+    On **Licenses**, click **New license**. From a customer's page, **New license for this customer** fills in the customer for you.
+  </Step>
+  <Step title="Choose the customer and product">
+    Search your customers by name or email. If your Discord bot is on, members of your Discord server can appear in the list too. The product fills in the default limits.
+  </Step>
+  <Step title="Set the type and limits">
+    **Permanent**, or a license that expires after a time or on a date. Change **Max IPs** and **Max HWIDs** if this license needs different limits.
+  </Step>
+  <Step title="Create it">
+    The key is generated in your [key design](/sunlicense/dashboard/license-keys). Show or copy it with the buttons next to it, or click **Regenerate** for another one. Click **Create license**.
+  </Step>
+</Steps>
 
-| Field | Description |
-| --- | --- |
-| **License Key** | Auto-generated (masked `XXXX-XXXX-...`). Hover to view, click to copy. |
-| **Product** | Select a product. Defaults for Max IPs/HWIDs auto-populate. |
-| **License Type & Expiry** | Choose `PERMANENT` or `TEMPORARY`. Temporary requires a duration or custom date. |
-| **Platform Details** | Select a platform (`SPIGOT`, `BUILT_BY_BIT`, `DISCORD`, `OTHER`) and enter the Platform User ID. |
-| **Owner Details** | Provide the user's Discord ID and username. If the bot is active, a dropdown may be available. |
-| **Initial Data/Status** | Set comma-separated IPs/HWIDs. Status defaults to `ACTIVE`. |
-| **Discord DM Prompt** | If a Discord ID is provided, you'll be prompted to send the key via DM. |
+Click a license in the list to edit its owner, limits, IPs, machines or status, or to delete it.
 
-### 2.2. Managing and updating licenses
+## Customers
 
-In the **Manage Licenses** tab:
+<Frame>
+  ![The Customers list with names, emails and creation dates](/images/sunlicense/v1/customers.png)
+</Frame>
 
-* **Search & Filter**: Search by keywords, product, user, and more.
-* **Editing**: Clicking a license opens an **Edit License** dialog, where you can update owner info, platform, limits, or status.
-* **Manual Data Management**: Edit IP/HWID lists directly (comma-separated).
-* **Status Updates**: Set to `ACTIVE`, `EXPIRED`, `DEACTIVATED`, or `DELETED`.
-* **Deletion**: Use the **Delete** button in the Edit dialog. You'll be asked to confirm before the license is permanently deleted.
+Click a customer to open their page:
 
-## 3. Blacklist management
+<Frame>
+  ![A customer page with details, linked accounts, licenses and recent emails](/images/sunlicense/v1/customer-page.png)
+</Frame>
 
-Blacklists prevent specific devices or IPs from validating licenses.
+- **Details**: name, username, email, notes, and whether they can sign in with a password. **Edit** changes them.
+- **Linked accounts**: their Discord and store accounts, such as BuiltByBit. **Link account** adds one.
+- **Licenses**: every license they own, and **New license for this customer**.
+- **Recent emails**: what SunLicense emailed them in the last 180 days.
 
-### 3.1. Creating a blacklist entry
+The **Emails** tab on **Customers** lists every email sent to customers.
 
-Use the **Create Blacklist** tab:
+## Validations
 
-1. **Type**: Select `IP` or `HWID`.
-2. **Data**: Enter the IP or Hardware ID.
-3. **Scope**: `All Products` or `Specific Product` (dropdown required).
-4. **Reason**: Required field explaining why the entry is added.
+Every time a plugin checks a key, SunLicense records it here.
 
-### 3.2. Managing blacklists
+<Frame>
+  ![The Validations page with a chart of successful, blocked and invalid checks by day and the list of recent checks](/images/sunlicense/v1/validations.png)
+</Frame>
 
-The **Manage Blacklists** tab displays all active blacklist entries:
+- Filter by part of a key, product and date range.
+- The chart shows successful, blocked and invalid checks by day.
+- Each row shows the result, for example **Successful**, **Max IPs reached** or **License key expired**. Click a row for the details the plugin sent, such as IP, HWID, operating system and Java version.
 
-* **Viewing**: See the blocked data, scope, product ID, and reason.
-* **Deleting**: Use the **Delete** button to remove an entry.
+## Blacklists
 
-## 4. Viewing license requests
+Block an IP address or a machine (HWID) for all products or one product.
 
-The **Requests** view provides analytics and history for all license validation attempts.
+<Frame>
+  ![The Blacklists page listing blocked IP addresses and HWIDs with reasons](/images/sunlicense/v1/blacklists.png)
+</Frame>
 
-### 4.1. Filtering and overview
+Click **Add to blacklist**, choose IP address or HWID, enter it, choose the products it applies to, and give a reason. **Remove** lifts a block.
 
-* **Filters**: Search term, Product, User, and Date Range.
-* **Status badges**:
-  * ✅ Successful (green)
-  * ❌ Invalid License
-  * 🚫 Spam / Rate Limited
-  * 🔴 Blocked (shows `BlockReason`)
+## Backups
 
-### 4.2. Viewing request details
+<Frame>
+  ![The Backups page with manual backups and the automatic backup schedule](/images/sunlicense/v1/backups.png)
+</Frame>
 
-Clicking a request row opens a dialog with detailed request data:
+- **Manual backups**: click **Back up now** before big changes such as an update. Add a note so you know why you made it. **Download** keeps a copy somewhere else.
+- **Automatic backups**: made on a schedule. **Edit** sets how often and how many to keep. When there are more than you keep, the oldest is deleted.
+- **Restore** replaces everything on your server with that backup.
+- With [offsite backups](/sunlicense/cloud/services#offsite-backups) on, encrypted copies kept in SunLicense Cloud are listed here too.
 
-* **License/Product Details**: Masked License Key, Product Version.
-* **Device Identifiers**: IP, HWID, MAC Address.
-* **System Environment**: OS Name/Version/Architecture, Java Version.
-* **Result Data**: Request Date, Type, and Response Type.
+## Also in the menu
+
+- **SunLicense Cloud**: how you run SunLicense, and the Cloud services. See [Three ways to run](/sunlicense/cloud/overview).
+- **Admins**: the people who can sign in to the dashboard.
+- **Settings**: everything else, grouped by topic. See [Settings](/sunlicense/dashboard/settings).
+- **Docs** and **Support**: these docs, and the SunDevs support desk.
